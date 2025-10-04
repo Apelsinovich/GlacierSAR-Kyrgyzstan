@@ -1,0 +1,98 @@
+[
+  {
+    "year": 2017,
+    "date": "2017-07-17",
+    "glacier_area_km2": 15.1757,
+    "glacier_pixels": 151757,
+    "coverage_percent": 33.67319315872157,
+    "mean_backscatter": -18.36814887859318,
+    "median_backscatter": -18.214482607984067,
+    "std_backscatter": 2.42610549808881,
+    "threshold_db": -14.970185496550293,
+    "window_size": "614x734"
+  },
+  {
+    "year": 2018,
+    "date": "2018-07-17",
+    "glacier_area_km2": 15.1047,
+    "glacier_pixels": 151047,
+    "coverage_percent": 33.781450584841096,
+    "mean_backscatter": -15.427064182797094,
+    "median_backscatter": -15.198774732165923,
+    "std_backscatter": 2.549734639255695,
+    "threshold_db": -12.031524890260968,
+    "window_size": "610x733"
+  },
+  {
+    "year": 2019,
+    "date": "2019-07-13",
+    "glacier_area_km2": 15.013,
+    "glacier_pixels": 150130,
+    "coverage_percent": 33.40319681030954,
+    "mean_backscatter": -17.244675012499926,
+    "median_backscatter": -16.993403299784546,
+    "std_backscatter": 2.3862276595357326,
+    "threshold_db": -14.318438152478464,
+    "window_size": "614x732"
+  },
+  {
+    "year": 2021,
+    "date": "2021-07-14",
+    "glacier_area_km2": 15.059,
+    "glacier_pixels": 150590,
+    "coverage_percent": 33.50554457912818,
+    "mean_backscatter": -18.39910557238986,
+    "median_backscatter": -18.214482607984067,
+    "std_backscatter": 2.136617055991261,
+    "threshold_db": -15.923018185254804,
+    "window_size": "614x732"
+  },
+  {
+    "year": 2022,
+    "date": "2022-07-15",
+    "glacier_area_km2": 15.1147,
+    "glacier_pixels": 151147,
+    "coverage_percent": 33.63838078557138,
+    "mean_backscatter": -17.501401284563308,
+    "median_backscatter": -17.43144012874113,
+    "std_backscatter": 2.7293269458434675,
+    "threshold_db": -13.615149811213449,
+    "window_size": "613x733"
+  },
+  {
+    "year": 2023,
+    "date": "2023-07-15",
+    "glacier_area_km2": 14.9998,
+    "glacier_pixels": 149998,
+    "coverage_percent": 33.48289224615165,
+    "mean_backscatter": -14.499468334940014,
+    "median_backscatter": -14.318438152478464,
+    "std_backscatter": 2.694435608998029,
+    "threshold_db": -10.83156629675527,
+    "window_size": "612x732"
+  },
+  {
+    "year": 2024,
+    "date": "2024-07-16",
+    "glacier_area_km2": 15.0865,
+    "glacier_pixels": 150865,
+    "coverage_percent": 33.5298771841704,
+    "mean_backscatter": -17.580851932425862,
+    "median_backscatter": -17.43144012874113,
+    "std_backscatter": 2.566408159068163,
+    "threshold_db": -13.810346556996578,
+    "window_size": "613x734"
+  },
+  {
+    "year": 2025,
+    "date": "2025-07-16",
+    "glacier_area_km2": 14.9674,
+    "glacier_pixels": 149674,
+    "coverage_percent": 33.410568234579806,
+    "mean_backscatter": -14.357904115856869,
+    "median_backscatter": -14.111621485714089,
+    "std_backscatter": 2.7297847780452975,
+    "threshold_db": -10.692589097648721,
+    "window_size": "612x732"
+  }
+]
