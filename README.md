@@ -9,6 +9,49 @@ Glacier monitoring and analysis system for Kyrgyzstan using Sentinel-1 SAR data 
 - Provide actionable insights for authorities, planners, and communities
 
 ---
+## 🤝 Team
+
+**TengriSpacers** - NASA Space Apps Challenge 2025
+
+- **Dmitrii Pecherkin** — Team Lead & Infrastructure Engineer
+- **Mikhail Vasilyev** — Developer (SAR data extraction & analysis)
+- **Farit Gatiatullin** — Developer (SAR implementation & research)
+- **Kenenbek Arzymatov** — Data Scientist (ML/AI & predictions)
+- **Juozas Bechelis** — Contributor (ideas & infrastructure)
+
+**Team page:** [TengriSpacers on NASA Space Apps Challenge](https://www.spaceappschallenge.org/2025/find-a-team/tengrispacers/)
+
+---
+## 🌍 Impact
+
+This project aims to:
+- Support authorities and planners in disaster mitigation
+- Raise awareness of glacier melt and climate impacts
+- Provide actionable insights for scientists and communities
+- Enable monitoring of critical water resources
+
+The techniques developed here can be adapted for glacier monitoring in other mountain regions worldwide, contributing to global climate change research and adaptation efforts.
+
+---
+## 🔗 Links & Resources
+
+### NASA Resources
+- [Intro to Synthetic Aperture Radar (SAR)](https://www.earthdata.nasa.gov/learn/earth-observation-data-basics/sar)
+- [Alaska Satellite Facility (ASF) Data Search Vertex](https://search.asf.alaska.edu/)
+- [SAR StoryMaps](https://nisar.jpl.nasa.gov/applications/arcgis-storymaps/)
+
+### Tools & Software
+- [QGIS](https://qgis.org) - GIS visualization
+- [nakarte.me](https://nakarte.me/) - Topographic maps
+- [Google Maps](https://www.google.com/maps) - Reference imagery
+
+### AI/ML Resources
+- [DINOv3](https://ai.meta.com/dinov3/) - Vision transformer model
+- [GitHub Copilot](https://copilot.microsoft.com/) - Development assistance
+- [ChatGPT](https://chat.openai.com/) - Research support
+- [Grok](https://grok.com/) - Research and problem-solving
+
+---
 
 ## 📁 Project Structure
 
@@ -372,40 +415,6 @@ python glacier_trend_predictor.py
 
 ---
 
-## 🤝 Team
-
-**TengriSpacers** - NASA Space Apps Challenge 2025
-
-- **Dmitrii Pecherkin** — Team Lead & Infrastructure Engineer
-- **Mikhail Vasilyev** — Developer (SAR data extraction & analysis)
-- **Farit Gatiatullin** — Developer (SAR implementation & research)
-- **Kenenbek Arzymatov** — Data Scientist (ML/AI & predictions)
-- **Juozas Bechelis** — Contributor (ideas & infrastructure)
-
-**Team page:** [TengriSpacers on NASA Space Apps Challenge](https://www.spaceappschallenge.org/2025/find-a-team/tengrispacers/)
-
----
-
-## 🔗 Links & Resources
-
-### NASA Resources
-- [Intro to Synthetic Aperture Radar (SAR)](https://www.earthdata.nasa.gov/learn/earth-observation-data-basics/sar)
-- [Alaska Satellite Facility (ASF) Data Search Vertex](https://search.asf.alaska.edu/)
-- [SAR StoryMaps](https://nisar.jpl.nasa.gov/applications/arcgis-storymaps/)
-
-### Tools & Software
-- [QGIS](https://qgis.org) - GIS visualization
-- [nakarte.me](https://nakarte.me/) - Topographic maps
-- [Google Maps](https://www.google.com/maps) - Reference imagery
-
-### AI/ML Resources
-- [DINOv3](https://ai.meta.com/dinov3/) - Vision transformer model
-- [GitHub Copilot](https://copilot.microsoft.com/) - Development assistance
-- [ChatGPT](https://chat.openai.com/) - Research support
-- [Grok](https://grok.com/) - Research and problem-solving
-
----
-
 ## 📝 Citation
 
 ```bibtex
@@ -442,18 +451,6 @@ pip install transformers torch pillow
 - Adjust `max_size_mb` parameter in scripts
 - Use QUICKLOOK mode for lower resolution
 - Enable automatic downsampling
-
----
-
-## 🌍 Impact
-
-This project aims to:
-- Support authorities and planners in disaster mitigation
-- Raise awareness of glacier melt and climate impacts
-- Provide actionable insights for scientists and communities
-- Enable monitoring of critical water resources
-
-The techniques developed here can be adapted for glacier monitoring in other mountain regions worldwide, contributing to global climate change research and adaptation efforts.
 
 ---
 
