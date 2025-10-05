@@ -1,0 +1,158 @@
+# SAR Processing Configuration for Ala-Archa Glaciers
+# NASA Space Apps Challenge 2025
+
+# Study Area - Ala-Archa Gorge, Kyrgyzstan
+study_area:
+  name: "Ala-Archa Gorge"
+  center_lat: 42.5650
+  center_lon: 74.5000
+  bounding_box:
+    min_lat: 42.4500
+    max_lat: 42.6800
+    min_lon: 74.3500
+    max_lon: 74.6500
+
+  # Specific glacier for detailed analysis - Golubina Glacier
+  target_glacier:
+    name: "Golubina Glacier"
+    # Coordinates for Golubina Glacier (approximate, may need refinement)
+    center_lat: 42.5700
+    center_lon: 74.5100
+    bounding_box:
+      min_lat: 42.5600
+      max_lat: 42.5800
+      min_lon: 74.5000
+      max_lon: 74.5200
+
+  # All glaciers of interest
+  glaciers:
+    - "Adigine"
+    - "Ak-Sai"
+    - "Golubina"
+    - "Toktogul"
+    - "Big Ala-Archa"
+    - "Small Ala-Archa"
+
+# SAR Data Configuration
+sar_data:
+  # Recommended: Sentinel-1 data from ASF
+  satellite: "Sentinel-1"
+  
+  # POLARIZATION RECOMMENDATION: VV
+  # VV (Vertical transmit, Vertical receive) is most sensitive to:
+  # - Ice surface changes
+  # - Snow water content
+  # - Glacier surface roughness
+  # Alternative: HH for certain applications
+  # Full polarimetric (HH+HV+VH+VV) for detailed analysis
+  polarization: "VV"  # Primary recommendation
+  alternate_polarization: "HH"  # Secondary option
+  full_polarimetric: ["HH", "HV", "VH", "VV"]  # For advanced analysis
+  
+  # Processing parameters
+  product_type: "GRD"  # Ground Range Detected (easier) or "SLC" (Single Look Complex, advanced)
+  orbit_direction: "ASCENDING"  # or "DESCENDING"
+  
+  # Temporal resolution
+  time_series:
+    start_date: "2020-01-01"
+    end_date: "2025-10-04"
+    interval_days: 12  # Sentinel-1 revisit time
+
+  # ASF API Download Configuration
+  api_download:
+    # Target glacier for detailed analysis
+    target_glacier_bbox:
+      min_lon: 74.5000
+      min_lat: 42.5600
+      max_lon: 74.5200
+      max_lat: 42.5800
+
+    # Download parameters
+    start_year: 2015
+    end_year: 2025
+    target_month: 7  # July - peak summer melt season
+    polarization: "VV+VH"  # Dual polarization for better classification
+    max_downloads: 15
+
+    # ASF API settings
+    platform: "Sentinel-1"
+    beam_mode: "IW"
+    processing_level: "GRD_HD"
+
+# Processing Pipeline Settings
+processing:
+  # Step 1: Preprocessing
+  preprocessing:
+    calibration: "sigma0"  # or "beta0", "gamma0"
+    speckle_filter: "Lee"  # Lee, Frost, or Refined Lee
+    filter_size: 5
+    terrain_correction: true
+    dem_source: "SRTM 1Sec HGT"  # or "ASTER GDEM"
+    
+  # Step 2: Glacier Detection
+  detection:
+    method: "threshold"  # threshold, machine_learning, or hybrid
+    threshold_value: -15  # dB for glacier/snow discrimination
+    min_area_km2: 0.01  # Minimum glacier size to detect
+    
+  # Step 3: Change Detection
+  change_detection:
+    method: "image_differencing"  # or "coherence_change", "ratio"
+    baseline_date: "2020-06-01"  # Summer baseline
+    significance_threshold: 3  # dB change significance
+    
+  # Step 4: Classification
+  classification:
+    classes:
+      - "dry_snow"
+      - "wet_snow"
+      - "firn"
+      - "glacier_ice"
+      - "debris_covered_ice"
+      - "rock"
+      - "water"
+
+# Output Settings
+output:
+  base_directory: "./output"
+  subdirectories:
+    raw: "raw_data"
+    preprocessed: "preprocessed"
+    results: "results"
+    visualizations: "visualizations"
+    reports: "reports"
+  
+  # Export formats
+  formats:
+    raster: "GeoTIFF"
+    vector: "GeoJSON"
+    plots: "PNG"
+    
+  # Coordinate system
+  crs: "EPSG:32643"  # WGS 84 / UTM zone 43N (Kyrgyzstan)
+
+# Visualization Settings
+visualization:
+  colormap_backscatter: "gray"
+  colormap_changes: "RdYlBu_r"
+  figure_dpi: 300
+  create_animations: true
+  animation_fps: 2
+
+# Analysis Settings
+analysis:
+  metrics:
+    - "glacier_area"
+    - "mean_backscatter"
+    - "backscatter_std"
+    - "coherence"
+    - "elevation_change"
+  
+  statistics:
+    - "trend_analysis"
+    - "seasonal_patterns"
+    - "melt_rate_estimation"
+    - "volume_change"
+
+
