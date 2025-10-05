@@ -1,0 +1,49 @@
+matplotlib
+
+# SAR Processing Pipeline Requirements
+# For glacier monitoring in Ala-Archa, Kyrgyzstan
+
+# Core SAR processing libraries
+snappy==0.4.0  # ESA SNAP Python interface (requires SNAP installation)
+gdal==3.8.0  # Geospatial data processing
+rasterio==1.3.9  # Raster data I/O
+pyproj==3.6.1  # Coordinate transformations
+
+# Scientific computing
+numpy==1.26.2
+scipy==1.11.4
+pandas==2.1.4
+
+# Image processing
+opencv-python==4.8.1.78
+scikit-image==0.22.0
+Pillow==10.1.0
+
+# SAR-specific processing
+sarpy==1.3.0  # SAR data processing
+pyroSAR==0.21.0  # SAR preprocessing framework
+
+# Machine Learning for classification
+scikit-learn==1.3.2
+torch==2.1.2
+torchvision==0.16.2
+
+# Visualization
+matplotlib==3.8.2
+seaborn==0.13.0
+plotly==5.18.0
+
+# Geospatial analysis
+geopandas==0.14.1
+shapely==2.0.2
+fiona==1.9.5
+
+# API and web requests
+requests==2.31.0  # For ASF API downloads
+
+# Utilities
+tqdm==4.66.1  # Progress bars
+pyyaml==6.0.1  # Configuration files
+jupyter==1.0.0  # For notebooks and analysis
+
+

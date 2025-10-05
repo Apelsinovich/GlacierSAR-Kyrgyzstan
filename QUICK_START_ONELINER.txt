@@ -1,0 +1,33 @@
+🚀 QUICK START: SAR Glacier Monitoring (Ala-Archa) - NASA Challenge 2025
+
+================================================================================
+
+1️⃣ INSTALL (2min): pip3 install numpy matplotlib scipy rasterio geopandas pyyaml
+
+2️⃣ API DATA (5min): python3 asf_api_downloader.py --years 2015 2025 --month 7 → 10 лет данных для ледника Голубина
+
+3️⃣ TEST (2min): python3 example_workflow.py → Check output/visualizations/
+
+4️⃣ TIMESERIES (5min): python3 time_series_processor.py → Анализ трендов таяния
+
+5️⃣ FULL PIPELINE (10min): python3 run_full_pipeline.py → Всё автоматически
+
+================================================================================
+
+🎯 KEY: Use VV polarization (Vertical-Vertical) - Best for ice melt detection!
+
+📊 RESULTS: Change maps, melt rate calculations, time series plots
+
+🔗 DOCS: QUICK_START.md (detailed) | DEBRIS_CLASSIFICATION.md (ice vs rock)
+
+================================================================================
+
+SUCCESS METRICS:
+✅ Detect melting zones | ✅ Quantify melt rates | ✅ Multi-year trends
+✅ Ice vs debris classification | ✅ Automated pipeline | ✅ Presentation ready
+
+================================================================================
+
+TEAM: TengriSpacers | CHALLENGE: Through the Radar Looking Glass
+
+

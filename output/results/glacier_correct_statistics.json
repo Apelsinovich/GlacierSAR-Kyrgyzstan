@@ -1,0 +1,101 @@
+[
+  {
+    "year": 2017,
+    "date": "2017-07-17",
+    "ice_area_km2": 223.2036,
+    "ice_pixels": 2232036,
+    "mean_backscatter": 21.259748252311827,
+    "std_backscatter": 2.1023437496150272,
+    "coverage_percent": 99.2016,
+    "backscatter_min": 11.4612803568134,
+    "backscatter_max": 34.54692449239492
+  },
+  {
+    "year": 2018,
+    "date": "2018-07-17",
+    "ice_area_km2": 223.2036,
+    "ice_pixels": 2232036,
+    "mean_backscatter": 21.484732546453063,
+    "std_backscatter": 2.1211202059126593,
+    "coverage_percent": 99.2016,
+    "backscatter_min": 12.041199826586391,
+    "backscatter_max": 33.51216345339361
+  },
+  {
+    "year": 2019,
+    "date": "2019-07-13",
+    "ice_area_km2": 223.2036,
+    "ice_pixels": 2232036,
+    "mean_backscatter": 21.400967098606692,
+    "std_backscatter": 1.5225723287038397,
+    "coverage_percent": 99.2016,
+    "backscatter_min": 10.413926851621731,
+    "backscatter_max": 38.06383501824175
+  },
+  {
+    "year": 2020,
+    "date": "2020-07-14",
+    "ice_area_km2": 223.2036,
+    "ice_pixels": 2232036,
+    "mean_backscatter": 19.417660127662693,
+    "std_backscatter": 1.6683012423519497,
+    "coverage_percent": 99.2016,
+    "backscatter_min": 10.791812460512439,
+    "backscatter_max": 39.20853496121264
+  },
+  {
+    "year": 2021,
+    "date": "2021-07-14",
+    "ice_area_km2": 223.2036,
+    "ice_pixels": 2232036,
+    "mean_backscatter": 21.386280232523564,
+    "std_backscatter": 1.4822267002488307,
+    "coverage_percent": 99.2016,
+    "backscatter_min": 12.552725051057187,
+    "backscatter_max": 38.2762770476744
+  },
+  {
+    "year": 2022,
+    "date": "2022-07-15",
+    "ice_area_km2": 223.2036,
+    "ice_pixels": 2232036,
+    "mean_backscatter": 20.69480049021867,
+    "std_backscatter": 2.3219454737165743,
+    "coverage_percent": 99.2016,
+    "backscatter_min": 9.542425094441503,
+    "backscatter_max": 33.525683861793276
+  },
+  {
+    "year": 2023,
+    "date": "2023-07-15",
+    "ice_area_km2": 223.2036,
+    "ice_pixels": 2232036,
+    "mean_backscatter": 21.349983446174814,
+    "std_backscatter": 2.232847667065463,
+    "coverage_percent": 99.2016,
+    "backscatter_min": 11.760912590585766,
+    "backscatter_max": 33.43014497150787
+  },
+  {
+    "year": 2024,
+    "date": "2024-07-16",
+    "ice_area_km2": 223.2036,
+    "ice_pixels": 2232036,
+    "mean_backscatter": 21.38910733179377,
+    "std_backscatter": 2.2052674619733996,
+    "coverage_percent": 99.2016,
+    "backscatter_min": 9.542425094441503,
+    "backscatter_max": 33.66049209800254
+  },
+  {
+    "year": 2025,
+    "date": "2025-07-16",
+    "ice_area_km2": 223.2036,
+    "ice_pixels": 2232036,
+    "mean_backscatter": 21.617332152818864,
+    "std_backscatter": 2.118381106467387,
+    "coverage_percent": 99.2016,
+    "backscatter_min": 12.304489213808285,
+    "backscatter_max": 33.649260337899946
+  }
+]
