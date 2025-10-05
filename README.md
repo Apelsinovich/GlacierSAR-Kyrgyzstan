@@ -13,7 +13,7 @@ Glacier monitoring and analysis system for Kyrgyzstan using Sentinel-1 SAR data 
 
 **TengriSpacers** - NASA Space Apps Challenge 2025
 
-- **Dmitrii Pecherkin** — Team Lead & Infrastructure Engineer
+- **Dmitrii Pecherkin** — Team Leader & Developer
 - **Mikhail Vasilyev** — Developer (SAR data extraction & analysis)
 - **Farit Gatiatullin** — Developer (SAR implementation & research)
 - **Kenenbek Arzymatov** — Data Scientist (ML/AI & predictions)
@@ -24,11 +24,15 @@ Glacier monitoring and analysis system for Kyrgyzstan using Sentinel-1 SAR data 
 ---
 ## 🌍 Impact
 
-This project aims to:
-- Support authorities and planners in disaster mitigation
-- Raise awareness of glacier melt and climate impacts
-- Provide actionable insights for scientists and communities
-- Enable monitoring of critical water resources
+What we made:
+- An APP (no UI) that shows how Kyrgyzstan’s glaciers are melting now - and how they may change next. Built for water, energy, and safety planning.
+
+Why it matters
+- Ice is a Kyrgyzstan’s Gold
+Glaciers power drinking water, farming, and hydropower. We knew they’re melting - now we quantify how fast and where first for Ala-Archa and Bishkek. 
+
+The science (simple)
+- We use SAR (radar from space) that works through clouds and at night. We process Sentinel-1 time series to get change maps, trends, and confidence bands. A trained LSTM (Long Short-Term Memory) model adds short-term forecasts.
 
 The techniques developed here can be adapted for glacier monitoring in other mountain regions worldwide, contributing to global climate change research and adaptation efforts.
 
@@ -93,9 +97,7 @@ pip install -r requirements.txt
 
 ### Basic Workflow
 
-1. **Download Sentinel-1 data** → `data_processing/download_sentinel1_data.py`
-2. **Convert to PNG images** → `data_processing/sentinel1_to_png.py`
-3. **Detect glaciers** → `glacier_detection/dinov3_glacier_segmentation.py`
+sar_download_satellite_data.py -> sar_generate_frames.py -> sar_crop_frames_to_glacier_from_frame_pngs.py -> sar_db_distribution_analysis.py -> glacier_trend_predictor.py -> create_glacier_gif.py
 4. **Predict trends** → `prediction/glacier_trend_predictor.py`
 
 ---
