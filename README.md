@@ -51,6 +51,14 @@ The techniques developed here can be adapted for glacier monitoring in other mou
 - [ChatGPT](https://chat.openai.com/) - Research support
 - [Grok](https://grok.com/) - Research and problem-solving
 
+### Project Documentation
+- [GOLUBINA_WORKFLOW.md](GOLUBINA_WORKFLOW.md) - Complete workflow for Golubina Glacier analysis
+- [POLARIZATION_RECOMMENDATION.md](POLARIZATION_RECOMMENDATION.md) - SAR polarization selection guide for glacier monitoring
+- [SIMPLE_PIPELINE_DIAGRAM.txt](SIMPLE_PIPELINE_DIAGRAM.txt) - Visual pipeline overview and key results
+- [POLARIZATION_GUIDE.md](POLARIZATION_GUIDE.md) - Technical reference for SAR polarization in glacier monitoring
+- [DEBRIS_CLASSIFICATION.md](DEBRIS_CLASSIFICATION.md) - Methods for distinguishing rocks and ice in SAR data
+- [ASF_API_GUIDE.md](ASF_API_GUIDE.md) - Automated Sentinel-1 data download using ASF API
+
 ---
 
 ## 📁 Project Structure
