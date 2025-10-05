@@ -35,6 +35,7 @@ We use SAR data to monitor and forecast glacier melt in the Ala-Archa gorge, whi
 - **⚡ One-Liner Guide**: [QUICK_START_ONELINER.txt](QUICK_START_ONELINER.txt) - Ultra-fast reference
 - **Quick Start Guide**: [QUICK_START.md](QUICK_START.md) - Get started in 30 minutes
 - **🔧 Auto-Start Script**: [start.sh](start.sh) - Automated setup script
+- **📥 Download Guide**: [ИНСТРУКЦИЯ_СКАЧИВАНИЯ.md](ИНСТРУКЦИЯ_СКАЧИВАНИЯ.md) - Automated SAR data download (Russian)
 - **Polarization Guide**: [POLARIZATION_GUIDE.md](POLARIZATION_GUIDE.md) - Detailed technical reference
 - **Debris Classification**: [DEBRIS_CLASSIFICATION.md](DEBRIS_CLASSIFICATION.md) - Solving ice vs rock discrimination
 - **ASF API Guide**: [ASF_API_GUIDE.md](ASF_API_GUIDE.md) - Automated data downloading
