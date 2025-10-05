@@ -1,7 +1,7 @@
 #!/usr/bin/env python3
 """
-Создание финальных визуализаций для ледника Голубина
-На основе правильного анализа dB Distribution с точными координатами
+Creating final visualizations for Golubina Glacier
+Based on correct dB Distribution analysis with precise coordinates
 """
 
 import numpy as np
@@ -16,24 +16,24 @@ import xml.etree.ElementTree as ET
 from scipy.ndimage import median_filter
 
 print("=" * 80)
-print("📊 СОЗДАНИЕ ФИНАЛЬНЫХ ВИЗУАЛИЗАЦИЙ")
+print("📊 CREATING FINAL VISUALIZATIONS")
 print("=" * 80)
 
-# Загружаем результаты
+# Load results
 with open('output/results/glacier_golubina_FINAL_PRECISE.json', 'r') as f:
     results = json.load(f)
 
-print(f"\n✅ Загружено результатов: {len(results)}")
-print(f"   (2020 год исключен - испорченные данные)\n")
+print(f"\n✅ Loaded results: {len(results)}")
+print(f"   (2020 year excluded - corrupted data)\n")
 
-# Параметры
+# Parameters
 TARGET_LON = (74.460, 74.520)
 TARGET_LAT = (42.440, 42.500)
 CALIB_FACTOR = 52.7
 GLACIER_PERCENTILE = 33.3
 
 def get_geolocation_grid(xml_path):
-    """Извлекает геолокационную сетку из XML"""
+    """Extracts geolocation grid from XML"""
     try:
         tree = ET.parse(xml_path)
         root = tree.getroot()
@@ -57,7 +57,7 @@ def get_geolocation_grid(xml_path):
         return None
 
 def lonlat_to_pixel_precise(lon, lat, gcps, img_width, img_height):
-    """Точная конвертация lon/lat в pixel используя GCP"""
+    """Precise conversion of lon/lat to pixel using GCP"""
     try:
         transform = rasterio.transform.from_gcps(gcps)
         row, col = rasterio.transform.rowcol(transform, lon, lat)
@@ -77,8 +77,8 @@ def find_glacier_simple(data_db, percentile=33.3):
     glacier_mask = (data_filtered <= threshold) & valid
     return glacier_mask, threshold
 
-# === ВИЗУАЛИЗАЦИЯ 1: Графики изменений ===
-print("\n📊 Создание графиков изменений...")
+# === VISUALIZATION 1: Change graphs ===
+print("\n📊 Creating change graphs...")
 
 fig, (ax1, ax2, ax3) = plt.subplots(3, 1, figsize=(14, 12))
 
@@ -87,18 +87,18 @@ areas = [r['glacier_area_km2'] for r in results]
 backscatter = [r['mean_backscatter'] for r in results]
 coverage = [r['coverage_percent'] for r in results]
 
-# График 1: Площадь
-ax1.plot(years, areas, 'o-', linewidth=3, markersize=10, color='#2E86AB', label='Площадь ледника')
+# Graph 1: Area
+ax1.plot(years, areas, 'o-', linewidth=3, markersize=10, color='#2E86AB', label='Glacier area')
 ax1.fill_between(years, areas, alpha=0.3, color='#2E86AB')
-ax1.axhline(y=np.mean(areas), color='red', linestyle='--', linewidth=2, label=f'Среднее: {np.mean(areas):.2f} км²')
-ax1.set_xlabel('Год', fontsize=14, fontweight='bold')
-ax1.set_ylabel('Площадь (км²)', fontsize=14, fontweight='bold')
-ax1.set_title('Площадь ледника Голубина (2017-2025)\nGlacier Ice (33.3% перцентиль)', 
+ax1.axhline(y=np.mean(areas), color='red', linestyle='--', linewidth=2, label=f'Average: {np.mean(areas):.2f} km²')
+ax1.set_xlabel('Year', fontsize=14, fontweight='bold')
+ax1.set_ylabel('Area (km²)', fontsize=14, fontweight='bold')
+ax1.set_title('Golubina Glacier Area (2017-2025)\nGlacier Ice (33.3% percentile)', 
              fontsize=16, fontweight='bold', pad=20)
 ax1.grid(True, alpha=0.3, linestyle='--')
 ax1.legend(fontsize=12, loc='upper right')
 
-# Аннотации
+# Annotations
 for year, area in zip(years, areas):
     ax1.annotate(f'{area:.2f}',
                 xy=(year, area),
@@ -108,28 +108,28 @@ for year, area in zip(years, areas):
                 fontsize=9,
                 bbox=dict(boxstyle='round,pad=0.5', fc='white', alpha=0.8))
 
-# График 2: Backscatter
+# Graph 2: Backscatter
 ax2.plot(years, backscatter, 's-', linewidth=3, markersize=10, color='#A23B72', label='Mean Sigma0')
 ax2.fill_between(years, backscatter, alpha=0.3, color='#A23B72')
-ax2.set_xlabel('Год', fontsize=14, fontweight='bold')
+ax2.set_xlabel('Year', fontsize=14, fontweight='bold')
 ax2.set_ylabel('Sigma0 (dB)', fontsize=14, fontweight='bold')
-ax2.set_title('Backscatter ледника', fontsize=14, fontweight='bold', pad=15)
+ax2.set_title('Glacier Backscatter', fontsize=14, fontweight='bold', pad=15)
 ax2.grid(True, alpha=0.3, linestyle='--')
 ax2.legend(fontsize=12)
 
-# График 3: Изменения относительно 2017
+# Graph 3: Changes relative to 2017
 base_area = areas[0]
 changes = [(a - base_area) / base_area * 100 for a in areas]
 colors = ['green' if c >= 0 else 'red' for c in changes]
 
 bars = ax3.bar(years, changes, color=colors, alpha=0.7, edgecolor='black', linewidth=1.5)
-ax3.set_xlabel('Год', fontsize=14, fontweight='bold')
-ax3.set_ylabel('Изменение (%)', fontsize=14, fontweight='bold')
-ax3.set_title(f'Изменение площади относительно 2017 года', fontsize=14, fontweight='bold', pad=15)
+ax3.set_xlabel('Year', fontsize=14, fontweight='bold')
+ax3.set_ylabel('Change (%)', fontsize=14, fontweight='bold')
+ax3.set_title(f'Area change relative to 2017', fontsize=14, fontweight='bold', pad=15)
 ax3.axhline(y=0, color='black', linestyle='-', linewidth=2)
 ax3.grid(True, alpha=0.3, linestyle='--', axis='y')
 
-# Значения на столбцах
+# Values on bars
 for year, change, bar in zip(years, changes, bars):
     height = bar.get_height()
     ax3.text(bar.get_x() + bar.get_width()/2., height,
@@ -143,17 +143,17 @@ plt.tight_layout()
 output1 = Path("output/visualizations/glacier_dynamics_FINAL.png")
 output1.parent.mkdir(parents=True, exist_ok=True)
 plt.savefig(output1, dpi=300, bbox_inches='tight', facecolor='white')
-print(f"✅ Сохранено: {output1.name}")
+print(f"✅ Saved: {output1.name}")
 plt.close()
 
-# === ВИЗУАЛИЗАЦИЯ 2: SAR снимки по годам ===
-print("\n📸 Создание SAR снимков по годам...")
+# === VISUALIZATION 2: SAR images by year ===
+print("\n📸 Creating SAR images by year...")
 
 data_dir = Path("output/raw_data")
 safe_dirs = sorted(list(data_dir.glob("*.SAFE")))
 vv_files = sorted(list(data_dir.glob("**/*vv*.tiff")))
 
-# Выбираем ключевые годы для визуализации
+# Select key years for visualization
 key_years = [2017, 2019, 2022, 2025]
 glacier_images = []
 
@@ -162,19 +162,19 @@ for safe_dir, vv_file in zip(safe_dirs, vv_files):
     date = datetime.strptime(date_str, '%Y%m%d')
     year = date.year
     
-    if year not in key_years or year == 2020:  # Исключаем 2020
+    if year not in key_years or year == 2020:  # Exclude 2020
         continue
     
     try:
-        # Используем XML для точных координат
+        # Use XML for precise coordinates
         xml_files = list(safe_dir.glob("**/s1*vv*.xml"))
         if not xml_files:
-            print(f"   {year}: ❌ XML не найден")
+            print(f"   {year}: ❌ XML not found")
             continue
         
         gcps = get_geolocation_grid(xml_files[0])
         if not gcps or len(gcps) < 4:
-            print(f"   {year}: ❌ GCP не найдены")
+            print(f"   {year}: ❌ GCP not found")
             continue
         
         with rasterio.open(vv_file) as src:
@@ -194,7 +194,7 @@ for safe_dir, vv_file in zip(safe_dirs, vv_files):
             for lon, lat in corners_lonlat:
                 px, py = lonlat_to_pixel_precise(lon, lat, gcps, img_width, img_height)
                 if px is None:
-                    raise ValueError("Конвертация координат не удалась")
+                    raise ValueError("Coordinate conversion failed")
                 pixels_x.append(px)
                 pixels_y.append(py)
             
@@ -208,7 +208,7 @@ for safe_dir, vv_file in zip(safe_dirs, vv_files):
             
             glacier_mask, threshold = find_glacier_simple(region_db, GLACIER_PERCENTILE)
             
-            # Находим статистику для этого года
+            # Find statistics for this year
             year_stats = next((r for r in results if r['year'] == year), None)
             
             glacier_images.append({
@@ -220,35 +220,35 @@ for safe_dir, vv_file in zip(safe_dirs, vv_files):
                 'threshold': threshold
             })
             
-            print(f"   {year}: загружено")
+            print(f"   {year}: loaded")
             
     except Exception as e:
-        print(f"   {year}: ошибка - {e}")
+        print(f"   {year}: error - {e}")
 
-# Создаем визуализацию
+# Create visualization
 if glacier_images:
     n = len(glacier_images)
     fig = plt.figure(figsize=(6*n, 15))
     
     for idx, img in enumerate(glacier_images):
-        # Ряд 1: Оригинальный SAR
+        # Row 1: Original SAR
         ax1 = plt.subplot(3, n, idx + 1)
         im1 = ax1.imshow(img['data_db'], cmap='gray', vmin=-25, vmax=5)
         ax1.set_title(f"{img['year']}\nSAR Sigma0 (VV)", fontsize=14, fontweight='bold')
         ax1.axis('off')
         plt.colorbar(im1, ax=ax1, label='dB', fraction=0.046, pad=0.04)
         
-        # Ряд 2: Цветная карта
+        # Row 2: Color map
         ax2 = plt.subplot(3, n, idx + 1 + n)
         im2 = ax2.imshow(img['data_db'], cmap='RdYlBu_r', vmin=-25, vmax=5)
-        ax2.set_title(f"Цветная карта\nпорог: {img['threshold']:.1f} dB", fontsize=12, fontweight='bold')
+        ax2.set_title(f"Color map\nthreshold: {img['threshold']:.1f} dB", fontsize=12, fontweight='bold')
         ax2.axis('off')
         plt.colorbar(im2, ax=ax2, label='dB', fraction=0.046, pad=0.04)
         
-        # Ряд 3: Маска ледника
+        # Row 3: Glacier mask
         ax3 = plt.subplot(3, n, idx + 1 + 2*n)
         
-        # RGB с выделением ледника
+        # RGB with glacier highlighting
         rgb = np.zeros((*img['data_db'].shape, 3))
         normalized = (img['data_db'] + 25) / 30
         normalized = np.clip(normalized, 0, 1)
@@ -256,30 +256,30 @@ if glacier_images:
         rgb[:,:,1] = normalized
         rgb[:,:,2] = normalized
         
-        # Ледник выделяем синим
+        # Highlight glacier in blue
         rgb[img['glacier_mask'], 0] = 0.1
         rgb[img['glacier_mask'], 1] = 0.6
         rgb[img['glacier_mask'], 2] = 1.0
         
         ax3.imshow(rgb)
         if img['stats']:
-            ax3.set_title(f"Glacier Ice\nПлощадь: {img['stats']['glacier_area_km2']:.2f} км²",
+            ax3.set_title(f"Glacier Ice\nArea: {img['stats']['glacier_area_km2']:.2f} km²",
                          fontsize=11, fontweight='bold')
         ax3.axis('off')
     
-    plt.suptitle('Ледник Голубина: Временная динамика (Sentinel-1A VV)\n'
-                 'Glacier Ice определен как 33.3% перцентиль backscatter',
+    plt.suptitle('Golubina Glacier: Temporal dynamics (Sentinel-1A VV)\n'
+                 'Glacier Ice defined as 33.3% percentile backscatter',
                 fontsize=16, fontweight='bold', y=0.99)
     plt.tight_layout(rect=[0, 0, 1, 0.98])
     
     output2 = Path("output/visualizations/glacier_timeline_FINAL.png")
     plt.savefig(output2, dpi=300, bbox_inches='tight', facecolor='white')
-    print(f"✅ Сохранено: {output2.name}")
+    print(f"✅ Saved: {output2.name}")
     plt.close()
 
-# === ВИЗУАЛИЗАЦИЯ 3: Сравнение 2017 vs 2025 ===
+# === VISUALIZATION 3: Comparison 2017 vs 2025 ===
 if len(glacier_images) >= 2:
-    print("\n🔍 Создание детального сравнения...")
+    print("\n🔍 Creating detailed comparison...")
     
     first = glacier_images[0]
     last = glacier_images[-1]
@@ -295,7 +295,7 @@ if len(glacier_images) >= 2:
     
     ax2 = plt.subplot(2, 4, 2)
     im2 = ax2.imshow(first['data_db'], cmap='RdYlBu_r', vmin=-25, vmax=5)
-    ax2.set_title(f"{first['year']} - Цветная карта", fontsize=14, fontweight='bold')
+    ax2.set_title(f"{first['year']} - Color map", fontsize=14, fontweight='bold')
     ax2.axis('off')
     plt.colorbar(im2, ax=ax2, label='dB', fraction=0.046)
     
@@ -308,11 +308,11 @@ if len(glacier_images) >= 2:
     
     ax4 = plt.subplot(2, 4, 4)
     im4 = ax4.imshow(last['data_db'], cmap='RdYlBu_r', vmin=-25, vmax=5)
-    ax4.set_title(f"{last['year']} - Цветная карта", fontsize=14, fontweight='bold')
+    ax4.set_title(f"{last['year']} - Color map", fontsize=14, fontweight='bold')
     ax4.axis('off')
     plt.colorbar(im4, ax=ax4, label='dB', fraction=0.046)
     
-    # Нижний ряд
+    # Bottom row
     ax5 = plt.subplot(2, 4, 5)
     rgb1 = np.zeros((*first['data_db'].shape, 3))
     norm1 = (first['data_db'] + 25) / 30
@@ -320,7 +320,7 @@ if len(glacier_images) >= 2:
     rgb1[:,:,:] = norm1[:,:,np.newaxis]
     rgb1[first['glacier_mask'], :] = [0.1, 0.6, 1.0]
     ax5.imshow(rgb1)
-    ax5.set_title(f"{first['year']} - Glacier Ice\n{first['stats']['glacier_area_km2']:.2f} км²",
+    ax5.set_title(f"{first['year']} - Glacier Ice\n{first['stats']['glacier_area_km2']:.2f} km²",
                  fontsize=12, fontweight='bold')
     ax5.axis('off')
     
@@ -331,11 +331,11 @@ if len(glacier_images) >= 2:
     rgb2[:,:,:] = norm2[:,:,np.newaxis]
     rgb2[last['glacier_mask'], :] = [0.1, 0.6, 1.0]
     ax6.imshow(rgb2)
-    ax6.set_title(f"{last['year']} - Glacier Ice\n{last['stats']['glacier_area_km2']:.2f} км²",
+    ax6.set_title(f"{last['year']} - Glacier Ice\n{last['stats']['glacier_area_km2']:.2f} km²",
                  fontsize=12, fontweight='bold')
     ax6.axis('off')
     
-    # Разница backscatter - используем меньший размер
+    # Backscatter difference - use smaller size
     ax7 = plt.subplot(2, 4, 7)
     min_h = min(first['data_db'].shape[0], last['data_db'].shape[0])
     min_w = min(first['data_db'].shape[1], last['data_db'].shape[1])
@@ -346,7 +346,7 @@ if len(glacier_images) >= 2:
     ax7.axis('off')
     plt.colorbar(im7, ax=ax7, label='Δ dB', fraction=0.046)
     
-    # Карта изменений - используем меньший размер
+    # Change map - use smaller size
     ax8 = plt.subplot(2, 4, 8)
     change_map = np.zeros((min_h, min_w))
     first_mask_crop = first['glacier_mask'][:min_h, :min_w]
@@ -368,28 +368,28 @@ if len(glacier_images) >= 2:
     area_change = last['stats']['glacier_area_km2'] - first['stats']['glacier_area_km2']
     pct_change = (area_change / first['stats']['glacier_area_km2']) * 100
     
-    ax8.set_title(f"Изменения площади\n{area_change:+.2f} км² ({pct_change:+.1f}%)",
+    ax8.set_title(f"Area changes\n{area_change:+.2f} km² ({pct_change:+.1f}%)",
                  fontsize=12, fontweight='bold')
     ax8.axis('off')
     
-    # Легенда
-    red_patch = mpatches.Patch(color='red', label='Потери')
-    green_patch = mpatches.Patch(color='green', label='Прирост')
-    blue_patch = mpatches.Patch(color='cyan', label='Стабильно')
+    # Legend
+    red_patch = mpatches.Patch(color='red', label='Losses')
+    green_patch = mpatches.Patch(color='green', label='Gains')
+    blue_patch = mpatches.Patch(color='cyan', label='Stable')
     fig.legend(handles=[red_patch, green_patch, blue_patch],
               loc='lower center', ncol=3, fontsize=14, frameon=True, fancybox=True)
     
-    plt.suptitle(f'Детальное сравнение: {first["year"]} vs {last["year"]}\n'
-                f'Ледник Голубина, Ala-Archa Gorge, Kyrgyzstan',
+    plt.suptitle(f'Detailed comparison: {first["year"]} vs {last["year"]}\n'
+                f'Golubina Glacier, Ala-Archa Gorge, Kyrgyzstan',
                 fontsize=18, fontweight='bold')
     plt.tight_layout(rect=[0, 0.03, 1, 0.97])
     
     output3 = Path("output/visualizations/glacier_comparison_FINAL.png")
     plt.savefig(output3, dpi=300, bbox_inches='tight', facecolor='white')
-    print(f"✅ Сохранено: {output3.name}")
+    print(f"✅ Saved: {output3.name}")
     plt.close()
 
 print(f"\n{'=' * 80}")
-print(f"✅ ВСЕ ВИЗУАЛИЗАЦИИ СОЗДАНЫ")
+print(f"✅ ALL VISUALIZATIONS CREATED")
 print(f"{'=' * 80}\n")
 

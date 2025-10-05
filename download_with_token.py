@@ -1,6 +1,6 @@
 #!/usr/bin/env python3
 """
-Скачивание SAR изображений с использованием Bearer токена
+Downloading SAR images using Bearer token
 """
 
 import asf_search as asf
@@ -12,50 +12,50 @@ import os
 
 
 def download_with_bearer_token(bearer_token, start_year=2017, end_year=2025, max_downloads=9):
-    """Скачивание с использованием Bearer токена"""
+    """Download using Bearer token"""
     
     print("=" * 80)
-    print("🏔️  СКАЧИВАНИЕ ИЗОБРАЖЕНИЙ ЛЕДНИКА ГОЛУБИНА С ТОКЕНОМ")
+    print("🏔️  DOWNLOADING GOLUBINA GLACIER IMAGES WITH TOKEN")
     print("=" * 80)
     
-    # Загружаем конфигурацию
+    # Load configuration
     with open('config.yaml', 'r', encoding='utf-8') as f:
         config = yaml.safe_load(f)
     
-    # Получаем координаты ледника
+    # Get glacier coordinates
     bbox_config = config['sar_data']['api_download']['target_glacier_bbox']
     
-    # Параметры поиска
+    # Search parameters
     wkt_aoi = f"POLYGON(({bbox_config['min_lon']} {bbox_config['min_lat']}, " \
               f"{bbox_config['max_lon']} {bbox_config['min_lat']}, " \
               f"{bbox_config['max_lon']} {bbox_config['max_lat']}, " \
               f"{bbox_config['min_lon']} {bbox_config['max_lat']}, " \
               f"{bbox_config['min_lon']} {bbox_config['min_lat']}))"
     
-    print(f"📍 Область: Ледник Голубина, Ала-Арча")
-    print(f"   Координаты: {bbox_config['min_lon']}, {bbox_config['min_lat']} - "
+    print(f"📍 Area: Golubina Glacier, Ala-Archa")
+    print(f"   Coordinates: {bbox_config['min_lon']}, {bbox_config['min_lat']} - "
           f"{bbox_config['max_lon']}, {bbox_config['max_lat']}")
     
-    # Директория для сохранения
+    # Directory for saving
     output_dir = Path("output/raw_data")
     output_dir.mkdir(parents=True, exist_ok=True)
-    print(f"📁 Директория: {output_dir}")
+    print(f"📁 Directory: {output_dir}")
     
     target_month = config['sar_data']['api_download']['target_month']
     
-    print(f"\n⏰ Период: {start_year} - {end_year}")
-    print(f"📅 Месяц: {target_month} (июль - пик таяния)")
-    print(f"🛰️  Спутник: Sentinel-1A")
-    print(f"📡 Поляризация: VV+VH")
-    print(f"🎯 Максимум: {max_downloads} снимков")
+    print(f"\n⏰ Period: {start_year} - {end_year}")
+    print(f"📅 Month: {target_month} (July - peak melting)")
+    print(f"🛰️  Satellite: Sentinel-1A")
+    print(f"📡 Polarization: VV+VH")
+    print(f"🎯 Maximum: {max_downloads} images")
     
     all_results = []
     
-    # Поиск по годам
-    print("\n🔍 Поиск доступных снимков...")
+    # Search by years
+    print("\n🔍 Searching for available images...")
     for year in range(start_year, end_year + 1):
         if len(all_results) >= max_downloads:
-            print(f"✋ Достигнут лимит ({max_downloads}), остановка поиска")
+            print(f"✋ Reached limit ({max_downloads}), stopping search")
             break
             
         start_date = f"{year}-{target_month-1:02d}-01" if target_month > 1 else f"{year}-01-01"
@@ -97,21 +97,21 @@ def download_with_bearer_token(bearer_token, start_year=2017, end_year=2025, max
                         scene_date = scene_date_str
                     scene_date_formatted = scene_date.strftime('%Y-%m-%d')
                     file_size = best_result.properties.get('bytes', 0) / (1024**3)
-                    print(f"✅ {year}: найден снимок от {scene_date_formatted} (~{file_size:.2f} GB)")
+                    print(f"✅ {year}: found image from {scene_date_formatted} (~{file_size:.2f} GB)")
             else:
-                print(f"❌ {year}: снимков не найдено")
+                print(f"❌ {year}: no images found")
                 
         except Exception as e:
-            print(f"❌ {year}: ошибка поиска - {e}")
+            print(f"❌ {year}: search error - {e}")
     
     if not all_results:
-        print("\n❌ Не найдено доступных снимков!")
+        print("\n❌ No available images found!")
         return []
     
-    print(f"\n📊 Всего найдено: {len(all_results)} снимков")
+    print(f"\n📊 Total found: {len(all_results)} images")
     
-    # Показываем детали
-    print("\n📋 Детали найденных снимков:")
+    # Show details
+    print("\n📋 Details of found images:")
     print("-" * 80)
     for i, result in enumerate(all_results, 1):
         props = result.properties
@@ -120,19 +120,19 @@ def download_with_bearer_token(bearer_token, start_year=2017, end_year=2025, max
             scene_date = datetime.fromisoformat(scene_date_str.replace('Z', '+00:00'))
         else:
             scene_date = scene_date_str
-        print(f"{i}. Дата: {scene_date.strftime('%Y-%m-%d %H:%M')}")
-        print(f"   Спутник: {props['platform']}")
-        print(f"   Размер: {props.get('bytes', 0)/(1024**3):.2f} GB")
-        print(f"   Файл: {props['fileName']}")
+        print(f"{i}. Date: {scene_date.strftime('%Y-%m-%d %H:%M')}")
+        print(f"   Satellite: {props['platform']}")
+        print(f"   Size: {props.get('bytes', 0)/(1024**3):.2f} GB")
+        print(f"   File: {props['fileName']}")
         print()
     
     total_size = sum(r.properties.get('bytes', 0) for r in all_results) / (1024**3)
-    print(f"💾 Общий размер: {total_size:.2f} GB")
-    print(f"⏱️  Примерное время: {total_size*2:.0f}-{total_size*5:.0f} минут")
+    print(f"💾 Total size: {total_size:.2f} GB")
+    print(f"⏱️  Estimated time: {total_size*2:.0f}-{total_size*5:.0f} minutes")
     
-    print("\n📥 Начинаем скачивание с Bearer токеном...")
+    print("\n📥 Starting download with Bearer token...")
     
-    # Создаем сессию с Bearer токеном
+    # Create session with Bearer token
     session = asf.ASFSession()
     session.auth_with_token(bearer_token)
     
@@ -144,45 +144,45 @@ def download_with_bearer_token(bearer_token, start_year=2017, end_year=2025, max
             filename = result.properties['fileName']
             output_path = output_dir / filename
             
-            print(f"\n[{i}/{len(all_results)}] Скачивание: {filename}")
+            print(f"\n[{i}/{len(all_results)}] Downloading: {filename}")
             
             if output_path.exists():
                 file_size_mb = output_path.stat().st_size / (1024**2)
-                print(f"   ⏭️  Файл уже существует ({file_size_mb:.1f} MB), пропускаем")
+                print(f"   ⏭️  File already exists ({file_size_mb:.1f} MB), skipping")
                 downloaded_count += 1
                 continue
             
             try:
-                print(f"   ⬇️  Начало скачивания...")
+                print(f"   ⬇️  Starting download...")
                 result.download(path=str(output_dir), session=session)
                 
                 if output_path.exists():
                     file_size_mb = output_path.stat().st_size / (1024**2)
-                    print(f"   ✅ Скачано успешно ({file_size_mb:.1f} MB)")
+                    print(f"   ✅ Downloaded successfully ({file_size_mb:.1f} MB)")
                     downloaded_count += 1
                 else:
-                    print(f"   ⚠️  Файл не найден после скачивания")
+                    print(f"   ⚠️  File not found after download")
                     failed_files.append(filename)
                     
             except Exception as e:
-                print(f"   ❌ Ошибка скачивания: {e}")
+                print(f"   ❌ Download error: {e}")
                 failed_files.append(filename)
         
         print("\n" + "=" * 80)
-        print("✅ СКАЧИВАНИЕ ЗАВЕРШЕНО")
+        print("✅ DOWNLOAD COMPLETED")
         print("=" * 80)
-        print(f"📊 Успешно: {downloaded_count}/{len(all_results)} файлов")
+        print(f"📊 Successful: {downloaded_count}/{len(all_results)} files")
         
         if failed_files:
-            print(f"\n⚠️  Не удалось скачать {len(failed_files)} файлов:")
+            print(f"\n⚠️  Failed to download {len(failed_files)} files:")
             for fname in failed_files:
                 print(f"   • {fname}")
         
-        print(f"\n📁 Файлы сохранены в: {output_dir}")
-        print("🚀 Готово к обработке!")
+        print(f"\n📁 Files saved to: {output_dir}")
+        print("🚀 Ready for processing!")
         
     except Exception as e:
-        print(f"\n❌ Критическая ошибка: {e}")
+        print(f"\n❌ Critical error: {e}")
         import traceback
         traceback.print_exc()
     
@@ -190,7 +190,7 @@ def download_with_bearer_token(bearer_token, start_year=2017, end_year=2025, max
 
 
 if __name__ == "__main__":
-    # Получаем токен из аргумента командной строки или переменной окружения
+    # Get token from command line argument or environment variable
     bearer_token = None
     
     if len(sys.argv) > 1:
@@ -198,13 +198,13 @@ if __name__ == "__main__":
     elif 'EARTHDATA_TOKEN' in os.environ:
         bearer_token = os.environ['EARTHDATA_TOKEN']
     else:
-        print("❌ Ошибка: Bearer токен не предоставлен!")
-        print("\nИспользование:")
-        print("  Вариант 1: python3 download_with_token.py YOUR_TOKEN")
-        print("  Вариант 2: export EARTHDATA_TOKEN='YOUR_TOKEN' && python3 download_with_token.py")
+        print("❌ Error: Bearer token not provided!")
+        print("\nUsage:")
+        print("  Option 1: python3 download_with_token.py YOUR_TOKEN")
+        print("  Option 2: export EARTHDATA_TOKEN='YOUR_TOKEN' && python3 download_with_token.py")
         sys.exit(1)
     
-    print("🔐 Bearer токен получен")
+    print("🔐 Bearer token received")
     
     try:
         results = download_with_bearer_token(
@@ -215,12 +215,12 @@ if __name__ == "__main__":
         )
         
         if results:
-            print(f"\n✅ Операция завершена! Найдено и обработано {len(results)} снимков.")
+            print(f"\n✅ Operation completed! Found and processed {len(results)} images.")
         else:
-            print("\n⚠️  Снимков не найдено.")
+            print("\n⚠️  No images found.")
             
     except KeyboardInterrupt:
-        print("\n\n⚠️  Прервано пользователем")
+        print("\n\n⚠️  Interrupted by user")
     except Exception as e:
         print(f"\n❌ Ошибка: {e}")
         import traceback

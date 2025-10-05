@@ -1,7 +1,7 @@
 #!/usr/bin/env python3
 """
-ПРАВИЛЬНЫЙ анализ ледника Голубина с точными координатами
-Использует геолокационную сетку из XML для точной конвертации координат
+CORRECT analysis of Golubina Glacier with precise coordinates
+Uses geolocation grid from XML for accurate coordinate conversion
 """
 
 import numpy as np
@@ -14,8 +14,8 @@ import xml.etree.ElementTree as ET
 from scipy.ndimage import median_filter
 
 print("=" * 80)
-print("🏔️  ПРАВИЛЬНЫЙ АНАЛИЗ С ТОЧНЫМИ КООРДИНАТАМИ")
-print("    Метод: Геолокационная сетка из XML + 33.3% перцентиль")
+print("🏔️  CORRECT ANALYSIS WITH PRECISE COORDINATES")
+print("    Method: Geolocation grid from XML + 33.3% percentile")
 print("=" * 80)
 
 TARGET_LON = (74.460, 74.520)
@@ -23,22 +23,22 @@ TARGET_LAT = (42.440, 42.500)
 CALIB_FACTOR = 52.7
 GLACIER_PERCENTILE = 33.3
 
-print(f"\n🎯 ЦЕЛЕВАЯ ОБЛАСТЬ:")
+print(f"\n🎯 TARGET AREA:")
 print(f"   Lon: {TARGET_LON[0]} - {TARGET_LON[1]}°E")
 print(f"   Lat: {TARGET_LAT[0]} - {TARGET_LAT[1]}°N\n")
 
 def get_geolocation_grid(xml_path):
-    """Извлекает геолокационную сетку из XML метаданных"""
+    """Extracts geolocation grid from XML metadata"""
     try:
         tree = ET.parse(xml_path)
         root = tree.getroot()
         
-        # Ищем geolocationGrid
+        # Search for geolocationGrid
         ns = {'s1': 'http://www.esa.int/safe/sentinel-1.0'}
         
         geolocation_grid = root.find('.//s1:geolocationGrid', ns)
         if geolocation_grid is None:
-            # Попробуем без namespace
+            # Try without namespace
             geolocation_grid = root.find('.//geolocationGrid')
         
         if geolocation_grid is None:
@@ -46,7 +46,7 @@ def get_geolocation_grid(xml_path):
         
         gcps = []
         
-        # Ищем все geolocationGridPoint
+        # Search for all geolocationGridPoint
         for point in geolocation_grid.findall('.//geolocationGridPoint'):
             try:
                 pixel = int(point.find('pixel').text)
@@ -66,19 +66,19 @@ def get_geolocation_grid(xml_path):
         return gcps
         
     except Exception as e:
-        print(f"     ⚠️  Ошибка парсинга XML: {e}")
+        print(f"     ⚠️  XML parsing error: {e}")
         return None
 
 def lonlat_to_pixel_precise(lon, lat, gcps, img_width, img_height):
-    """Точная конвертация lon/lat в pixel используя GCP"""
+    """Precise conversion of lon/lat to pixel using GCP"""
     try:
-        # Создаем transform из GCPs
+        # Create transform from GCPs
         transform = rasterio.transform.from_gcps(gcps)
         
-        # Конвертируем lon/lat в pixel
+        # Convert lon/lat to pixel
         row, col = rasterio.transform.rowcol(transform, lon, lat)
         
-        # Ограничиваем значениями изображения
+        # Limit to image bounds
         col = int(np.clip(col, 0, img_width - 1))
         row = int(np.clip(row, 0, img_height - 1))
         
@@ -102,7 +102,7 @@ data_dir = Path("output/raw_data")
 safe_dirs = sorted(list(data_dir.glob("*.SAFE")))
 vv_files = sorted(list(data_dir.glob("**/*vv*.tiff")))
 
-print(f"📊 Файлов для анализа: {len(vv_files)}\n")
+print(f"📊 Files for analysis: {len(vv_files)}\n")
 
 results = []
 failed_years = []
@@ -115,10 +115,10 @@ for idx, (safe_dir, vv_file) in enumerate(zip(safe_dirs, vv_files), 1):
     print(f"[{idx}/{len(vv_files)}] {year}: {date.strftime('%Y-%m-%d')}", end='')
     
     try:
-        # Находим XML файл с геолокацией
+        # Find XML file with geolocation
         xml_files = list(safe_dir.glob("**/s1*vv*.xml"))
         if not xml_files:
-            print(" ❌ XML не найден")
+            print(" ❌ XML not found")
             failed_years.append(year)
             continue
         
@@ -126,7 +126,7 @@ for idx, (safe_dir, vv_file) in enumerate(zip(safe_dirs, vv_files), 1):
         gcps = get_geolocation_grid(xml_path)
         
         if not gcps or len(gcps) < 4:
-            print(" ❌ GCP не найдены в XML")
+            print(" ❌ GCP not found in XML")
             failed_years.append(year)
             continue
         
@@ -134,7 +134,7 @@ for idx, (safe_dir, vv_file) in enumerate(zip(safe_dirs, vv_files), 1):
             img_width = src.width
             img_height = src.height
             
-            # Конвертируем углы целевой области в пиксели
+            # Convert target area corners to pixels
             corners_lonlat = [
                 (TARGET_LON[0], TARGET_LAT[0]),  # SW
                 (TARGET_LON[1], TARGET_LAT[0]),  # SE
@@ -152,24 +152,24 @@ for idx, (safe_dir, vv_file) in enumerate(zip(safe_dirs, vv_files), 1):
                 pixels_x.append(px)
                 pixels_y.append(py)
             
-            # Определяем bbox в пикселях
+            # Define bbox in pixels
             pixel_min = max(0, min(pixels_x))
             pixel_max = min(img_width, max(pixels_x))
             line_min = max(0, min(pixels_y))
             line_max = min(img_height, max(pixels_y))
             
-            # Проверяем, что область валидна
+            # Check that area is valid
             if pixel_max <= pixel_min or line_max <= line_min:
-                print(f" ❌ Целевая область вне снимка")
+                print(f" ❌ Target area outside image")
                 failed_years.append(year)
                 continue
             
-            # Читаем данные
+            # Read data
             window_width = pixel_max - pixel_min
             window_height = line_max - line_min
             
             if window_width < 50 or window_height < 50:
-                print(f" ❌ Слишком маленькое окно: {window_width}x{window_height}")
+                print(f" ❌ Window too small: {window_width}x{window_height}")
                 failed_years.append(year)
                 continue
             
@@ -207,10 +207,10 @@ for idx, (safe_dir, vv_file) in enumerate(zip(safe_dirs, vv_files), 1):
             
             results.append(stats)
             
-            print(f" → {glacier_area_km2:>5.2f} км² ({coverage_pct:.1f}%, окно: {window_width}x{window_height} px)")
+            print(f" → {glacier_area_km2:>5.2f} km² ({coverage_pct:.1f}%, window: {window_width}x{window_height} px)")
             
     except Exception as e:
-        print(f" ❌ Ошибка: {e}")
+        print(f" ❌ Error: {e}")
         failed_years.append(year)
 
 if results:
@@ -221,10 +221,10 @@ if results:
         json.dump(results, f, indent=2, ensure_ascii=False)
     
     print(f"\n{'=' * 80}")
-    print(f"📊 РЕЗУЛЬТАТЫ С ТОЧНЫМИ КООРДИНАТАМИ")
+    print(f"📊 RESULTS WITH PRECISE COORDINATES")
     print(f"{'=' * 80}")
     
-    print(f"\n{'Год':<6} {'Дата':<12} {'Площадь':<15} {'%':<8} {'Sigma0':<15} {'Окно':<15} {'Изм.от 2017'}")
+    print(f"\n{'Year':<6} {'Date':<12} {'Area':<15} {'%':<8} {'Sigma0':<15} {'Window':<15} {'Change from 2017'}")
     print(f"{'-'*6} {'-'*12} {'-'*15} {'-'*8} {'-'*15} {'-'*15} {'-'*18}")
     
     base_area = results[0]['glacier_area_km2']
@@ -240,7 +240,7 @@ if results:
         else:
             trend = "✅"
         
-        print(f"{r['year']:<6} {r['date']:<12} {r['glacier_area_km2']:>9.2f} км²   {r['coverage_percent']:>5.1f}%  "
+        print(f"{r['year']:<6} {r['date']:<12} {r['glacier_area_km2']:>9.2f} km²   {r['coverage_percent']:>5.1f}%  "
               f"{r['mean_backscatter']:>6.2f} dB  {r['window_size']:<15} {trend} {change:+6.2f} ({change_pct:+5.1f}%)")
     
     first = results[0]
@@ -250,39 +250,39 @@ if results:
     area_change_pct = (area_change / first['glacier_area_km2']) * 100
     
     print(f"\n{'=' * 80}")
-    print(f"📈 ИЗМЕНЕНИЯ {first['year']} → {last['year']} ({len(results)} снимков)")
+    print(f"📈 CHANGES {first['year']} → {last['year']} ({len(results)} images)")
     print(f"{'=' * 80}")
     
-    print(f"\n❄️  ПЛОЩАДЬ ЛЕДНИКА:")
-    print(f"   {first['year']}: {first['glacier_area_km2']:.2f} км² ({first['coverage_percent']:.1f}%)")
-    print(f"   {last['year']}: {last['glacier_area_km2']:.2f} км² ({last['coverage_percent']:.1f}%)")
-    print(f"   Изменение: {area_change:+.2f} км² ({area_change_pct:+.1f}%)")
+    print(f"\n❄️  GLACIER AREA:")
+    print(f"   {first['year']}: {first['glacier_area_km2']:.2f} km² ({first['coverage_percent']:.1f}%)")
+    print(f"   {last['year']}: {last['glacier_area_km2']:.2f} km² ({last['coverage_percent']:.1f}%)")
+    print(f"   Change: {area_change:+.2f} km² ({area_change_pct:+.1f}%)")
     
     if abs(area_change_pct) < 10:
-        status = "✅ СТАБИЛЬНА"
+        status = "✅ STABLE"
     elif area_change_pct < -10:
-        status = "🔴 СОКРАЩАЕТСЯ"
+        status = "🔴 SHRINKING"
     else:
-        status = "🟢 РАСТЕТ"
+        status = "🟢 GROWING"
     
-    print(f"   Статус: {status}")
+    print(f"   Status: {status}")
     
     avg_area = np.mean([r['glacier_area_km2'] for r in results])
     std_area = np.std([r['glacier_area_km2'] for r in results])
     
-    print(f"\n🔄 СТАТИСТИКА:")
-    print(f"   Среднее: {avg_area:.2f} ± {std_area:.2f} км²")
+    print(f"\n🔄 STATISTICS:")
+    print(f"   Average: {avg_area:.2f} ± {std_area:.2f} km²")
     print(f"   CV: {(std_area/avg_area)*100:.1f}%")
     
-    print(f"\n💾 Результаты: {output_file}")
+    print(f"\n💾 Results: {output_file}")
     
     if failed_years:
-        print(f"\n⚠️  Пропущенные годы: {', '.join(map(str, failed_years))}")
+        print(f"\n⚠️  Skipped years: {', '.join(map(str, failed_years))}")
     
     print(f"\n{'=' * 80}")
-    print(f"✅ АНАЛИЗ С ТОЧНЫМИ КООРДИНАТАМИ ЗАВЕРШЕН")
+    print(f"✅ ANALYSIS WITH PRECISE COORDINATES COMPLETED")
     print(f"{'=' * 80}\n")
 else:
-    print("\n❌ Не удалось проанализировать ни один снимок")
+    print("\n❌ Failed to analyze any images")
 
 
