@@ -1,0 +1,58 @@
+Sentinel-1 SAR → NASA OPERA processing → VV.tif files → PNG frames
+                                           ↑                ↑
+                                  download_vv_tifs.py  generate_frames.py
+
+
+
+FRAME NUMBERS EXPLANATION:
+
+T107-228503-IW3 = Track 107, Frame 228503, Swath IW3
+T005-009414-IW1 = Track 5, Frame 9414, Swath IW1  
+T005-009413-IW1 = Track 5, Frame 9413, Swath IW1
+
+What each number means:
+- TRACK = Orbital path (like highway route)
+- FRAME = Geographic tile/scene (like street address)  
+- SWATH = Radar beam section (IW1, IW2, IW3)
+
+Frame 228503 Coverage:
+- Shows COMPLETE Ala Archa glacier
+- Covers ~250km x 250km ground area
+- Same geographic footprint every orbit
+- Available every 12 days on Track 107
+
+Why 228503 is special for your glacier:
+- Frame 228503 is perfectly positioned over Ala Archa
+- Other frame numbers (like 9413, 9414) only show PARTS of glacier  
+- Frame 228503 = "address" where your whole glacier lives
+- Every year, same frame number = same geographic coverage
+
+Frame = Fixed geographic "tile" that satellite photographs
+Each frame has permanent boundaries on Earth's surface
+*228503*201608*
+*228503*201708*
+*228503*201808*
+*228503*201908*
+*228503*202008*
+*228503*202108*
+*228503*202208*
+*228503*202308*
+*228503*202408*
+*228503*202508*
+
+https://search.asf.alaska.edu/#/?polygon=POLYGON((74.4657%2042.434,74.5293%2042.434,74.5293%2042.481,74.4657%2042.481,74.4657%2042.434))&zoom=7.594&center=75.629,41.096&start=2016-07-31T18:00:00Z&end=2025-08-31T17:59:59Z&resultsLoaded=true&granule=S1A_IW_GRDH_1SDV_20250529T011318_20250529T011343_059402_075F97_F4CE-METADATA_GRD_HD&dataset=SENTINEL-1
+
+S1A_IW_GRDH_1SDV_20250529T011318_20250529T011343_059402_075F97_F4CE
+Sentinel-1 • C-Band
+
+Start Time • 05/29/2025, 01:13:18Z
+Stop Time • 05/29/2025, 01:13:43Z
+Beam Mode • IW
+Path • 5
+Frame • 451 
+Flight Direction • DESCENDING 
+Polarization • VV+VH 
+Absolute Orbit • 59402
+PGE Version • 3.91
+Data courtesy of ESA
+Citation

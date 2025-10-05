@@ -1,0 +1,61 @@
+# Ala Archa Gorge, Golubin Glacier SAR Analysis Configuration
+
+# Study Area Configuration
+area:
+  name: "Golubina Glacier"
+  country: "Kyrgyz Republic"
+  # Area of Interest as [min_lon, min_lat, max_lon, max_lat]
+  # Just raw not accurate coordinates for initial bounding box
+  bbox: [74.45, 42.62, 74.55, 42.72]
+  
+  # Glacier Areas of Interest - multiple coordinate boxes to combine
+  glacier_areas:
+    - name: "main_glacier"  
+      min_lon: 74.460
+      min_lat: 42.440
+      max_lon: 74.520
+      max_lat: 42.500
+    # Add more areas if needed:
+    # - name: "secondary_area"
+    #   min_lon: 74.520
+    #   min_lat: 42.460
+    #   max_lon: 74.560
+    #   max_lat: 42.500
+  grid_spacing: 0.02
+  # Or use WKT polygon format (uncomment to use instead of bbox)
+  # wkt: "POLYGON((74.45 42.62, 74.55 42.62, 74.55 42.72, 74.45 42.72, 74.45 42.62))"
+
+processing:
+  # dB range for visualization (glaciers appear darker with negative values)
+  db_range: [-25.0, 0.0]
+  
+  # Sentinel-1 parameters
+  platform: "SENTINEL1"
+  product_type: "RTC"  # Radiometric Terrain Corrected
+  dataset: "OPERA_S1"  # NASA OPERA products
+  
+  # Output settings
+  frame_format: "PNG"
+  date_format: "%Y-%m-%d"  # YYYY-MM-DD
+  
+# Directory Structure
+directories:
+  output: "out"
+  frames: "out/sar_frames" 
+  satellite_data: "out/satellite_data"
+  cache: "out/cache"
+
+# Download Settings
+download:
+  timeout: 30  # seconds
+  max_retries: 3
+  chunk_size: 8192
+
+# Authentication
+# Note: Set up ~/.netrc file with your NASA Earthdata credentials:
+# machine urs.earthdata.nasa.gov
+# login your_username  
+# password your_password
+auth:
+  earthdata_required: true
+  netrc_file: "~/.netrc"

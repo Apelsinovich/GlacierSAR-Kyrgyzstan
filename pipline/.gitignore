@@ -1,0 +1,39 @@
+# Project files
+*.pyc
+__pycache__/
+*.pyo
+*.pyd
+.Python
+env/
+venv/
+.venv/
+pip-log.txt
+pip-delete-this-directory.txt
+
+# IDEs
+.vscode/
+.idea/
+*.swp
+*.swo
+*~
+
+# OS
+.DS_Store
+Thumbs.db
+
+# Output directories
+out/
+logs/
+cache/
+
+# Temporary files
+*.tmp
+*.temp
+*.log
+
+# Authentication
+.netrc*
+
+# Config backups
+config_*.yaml
+*.yaml.bak
