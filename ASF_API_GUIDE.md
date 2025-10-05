@@ -1,35 +1,35 @@
-# ASF API Guide: Автоматизированное скачивание Sentinel-1 данных
+# ASF API Guide: Automated Sentinel-1 Data Download
 
-## 🚀 Быстрое начало
+## 🚀 Quick start
 
 ```bash
-# 1. Установите зависимости
+# 1. Install dependencies
 pip3 install requests
 
-# 2. Скачайте данные за 10 лет для ледника Голубина
+# 2. Download 10 years of data for Golubina Glacier
 python3 asf_api_downloader.py --years 2015 2025 --month 7
 
-# 3. Или запустите полный пайплайн автоматически
+# 3. Or run the full pipeline automatically
 python3 run_full_pipeline.py
 ```
 
 ---
 
-## 📋 Параметры ASF API
+## 📋 ASF API Parameters
 
-### Основные параметры поиска:
+### Main search parameters:
 
-| Параметр | Описание | Пример значения |
-|----------|----------|-----------------|
-| `platform` | Спутниковая платформа | `"Sentinel-1"` |
-| `processingLevel` | Уровень обработки | `"GRD_HD"` |
-| `beamMode` | Режим съёмки | `"IW"` |
-| `polarization` | Поляризация | `"VV+VH"` |
-| `start` | Дата начала | `"2015-07-01"` |
-| `end` | Дата окончания | `"2025-07-31"` |
-| `bbox` | Границы области | `"74.5,42.56,74.52,42.58"` |
+| Parameter | Description | Example value |
+|-----------|-------------|---------------|
+| `platform` | Satellite platform | `"Sentinel-1"` |
+| `processingLevel` | Processing level | `"GRD_HD"` |
+| `beamMode` | Acquisition mode | `"IW"` |
+| `polarization` | Polarization | `"VV+VH"` |
+| `start` | Start date | `"2015-07-01"` |
+| `end` | End date | `"2025-07-31"` |
+| `bbox` | Area boundaries | `"74.5,42.56,74.52,42.58"` |
 
-### Конфигурация для ледника Голубина:
+### Configuration for Golubina Glacier:
 
 ```yaml
 # config.yaml
@@ -42,93 +42,93 @@ api_download:
 
   start_year: 2015
   end_year: 2025
-  target_month: 7  # Июль - пик таяния
+  target_month: 7  # July - melting peak
   polarization: "VV+VH"
   max_downloads: 15
 ```
 
 ---
 
-## 🗓️ Стратегия сканирования
+## 🗓️ Scanning strategy
 
-### Ежегодные летние снимки:
+### Annual summer images:
 
 ```python
-# Скачиваем по одному снимку за июль каждого года
+# Download one image per July each year
 for year in range(2015, 2026):
     start_date = f"{year}-06-15"
     end_date = f"{year}-08-15"
 
-    # Ищем лучший снимок в этом периоде
+    # Find the best image in this period
     granules = search_granules(bbox, start_date, end_date)
     best_granule = select_best_annual_scene(granules, target_month=7)
     download_granule(best_granule)
 ```
 
-### Преимущества подхода:
-- ✅ Один снимок в год в пик сезона таяния
-- ✅ Минимальный объём данных (10-15 файлов)
-- ✅ Достаточно для анализа трендов за 10 лет
-- ✅ Фокус на летний период (максимальное таяние)
+### Advantages of this approach:
+- ✅ One image per year at melting season peak
+- ✅ Minimal data volume (10-15 files)
+- ✅ Sufficient for 10-year trend analysis
+- ✅ Focus on summer period (maximum melting)
 
 ---
 
-## 🔧 Примеры использования
+## 🔧 Usage examples
 
-### Пример 1: Скачивание для конкретного ледника
+### Example 1: Download for specific glacier
 
 ```python
 from asf_api_downloader import ASFAPIDownloader
 
-# Инициализация
+# Initialize
 downloader = ASFAPIDownloader()
 
-# Координаты ледника Голубина
+# Golubina Glacier coordinates
 bbox = (74.5000, 42.5600, 74.5200, 42.5800)
 
-# Скачивание за 10 лет
+# Download for 10 years
 downloaded_files = downloader.download_time_series(
     bbox=bbox,
     start_year=2015,
     end_year=2025,
-    target_month=7,  # Июль
+    target_month=7,  # July
     polarization="VV+VH"
 )
 ```
 
-### Пример 2: Кастомные параметры
+### Example 2: Custom parameters
 
 ```python
-# Скачивание для другого региона/периода
+# Download for different region/period
 custom_files = downloader.download_time_series(
-    bbox=(74.45, 42.55, 74.55, 42.65),  # Другой регион
+    bbox=(74.45, 42.55, 74.55, 42.65),  # Different region
     start_year=2020,
     end_year=2023,
-    target_month=8,  # Август
+    target_month=8,  # August
     polarization="VV",
     max_downloads=5
 )
 ```
 
-### Пример 3: Тестовое скачивание
+### Example 3: Test download
 
 ```python
-# Маленький тест для проверки работоспособности
+# Small test to check functionality
 test_files = downloader.download_time_series(
-    bbox=(74.50, 42.56, 74.52, 42.58),  # Очень маленькая область
+    bbox=(74.50, 42.56, 74.52, 42.58),  # Very small area
     start_year=2022,
     end_year=2023,
     target_month=7,
     polarization="VV",
-    max_downloads=2  # Только 2 файла
+    max_downloads=2  # Only 2 files
 )
 ```
 
 ---
 
-## 📊 Структура ответа ASF API
+## 📊 ASF API Response Structure
 
-### Пример ответа поиска:
+### Example search response:
 
 ```json
 {
@@ -147,89 +147,89 @@ test_files = downloader.download_time_series(
 }
 ```
 
-### Ключевые поля:
-- `sceneDate`: Дата съёмки
-- `downloadUrl`: Прямая ссылка для скачивания
-- `polarization`: Доступные поляризации
-- `sizeMB`: Размер файла в МБ
+### Key fields:
+- `sceneDate`: Acquisition date
+- `downloadUrl`: Direct download link
+- `polarization`: Available polarizations
+- `sizeMB`: File size in MB
 
 ---
 
-## 🚨 Важные замечания
+## 🚨 Important notes
 
-### Ограничения ASF API:
-- **Бесплатно** для научных целей
-- **Лимит запросов**: ~1000 в час (для предотвращения злоупотреблений)
-- **Размер файлов**: Sentinel-1 GRD ~800-900 МБ каждый
-- **Время скачивания**: 1-2 минуты на файл (зависит от скорости интернета)
+### ASF API limitations:
+- **Free** for scientific purposes
+- **Request limit**: ~1000 per hour (to prevent abuse)
+- **File size**: Sentinel-1 GRD ~800-900 MB each
+- **Download time**: 1-2 minutes per file (depends on internet speed)
 
-### Обработка ошибок:
+### Error handling:
 
 ```python
 try:
     granules = downloader.search_granules(bbox, start_date, end_date)
     if not granules:
-        print("❌ Нет данных для указанного периода")
+        print("❌ No data found for specified period")
         return
 
     downloaded = downloader.download_time_series(...)
-    print(f"✅ Скачано {len(downloaded)} файлов")
+    print(f"✅ Downloaded {len(downloaded)} files")
 
 except requests.exceptions.RequestException as e:
-    print(f"❌ Ошибка сети: {e}")
+    print(f"❌ Network error: {e}")
 except Exception as e:
-    print(f"❌ Другая ошибка: {e}")
+    print(f"❌ Other error: {e}")
 ```
 
-### Рекомендации:
-1. **Начинайте с тестового скачивания** маленькой области
-2. **Используйте VPN** если есть проблемы с доступом
-3. **Проверяйте лимиты ASF** для интенсивного использования
+### Recommendations:
+1. **Start with test download** of small area
+2. **Use VPN** if there are access issues
+3. **Check ASF limits** for intensive use
 
 ---
 
-## 🎯 Для вашего проекта
+## 🎯 For your project
 
-### Ледник Голубина (Ala-Archa):
+### Golubina Glacier (Ala-Archa):
 
 ```bash
-# Рекомендуемая команда для вашего проекта:
+# Recommended command for your project:
 python3 asf_api_downloader.py --years 2015 2025 --month 7
 
-# Это скачает:
+# This will download:
 # • 2015-07: S1A_IW_GRDH_1SDV_201507xx_VV_VH.zip
 # • 2016-07: S1A_IW_GRDH_1SDV_201607xx_VV_VH.zip
-# • ... (по одному файлу за каждый год)
+# • ... (one file per year)
 # • 2025-07: S1A_IW_GRDH_1SDV_202507xx_VV_VH.zip
 ```
 
-### Ожидаемые результаты:
-- 📁 **11 файлов** (2015-2025)
-- 📊 **~10 ГБ** данных
-- ⏱️ **15-20 минут** на скачивание
-- 🎯 **Готовые данные** для анализа временных рядов
+### Expected results:
+- 📁 **11 files** (2015-2025)
+- 📊 **~10 GB** data
+- ⏱️ **15-20 minutes** download time
+- 🎯 **Ready data** for time series analysis
 
 ---
 
-## 🔗 Полезные ссылки
+## 🔗 Useful links
 
-- **ASF API документация**: https://docs.asf.alaska.edu/api/
-- **ASF поисковый интерфейс**: https://search.asf.alaska.edu/
-- **Sentinel-1 информация**: https://sentinel.esa.int/web/sentinel/missions/sentinel-1
-
----
-
-## ✅ Итоговые рекомендации
-
-1. **Используйте ASF API** для автоматизации
-2. **Начинайте с тестового скачивания** маленькой области
-3. **Скачивайте VV+VH поляризацию** для лучшей классификации
-4. **Выбирайте июль** для анализа пика таяния
-5. **Ограничивайте количество** файлов разумными пределами
-
-**Результат**: Полностью автоматизированный сбор данных за 10 лет для анализа таяния ледника Голубина! 🚀
+- **ASF API documentation**: https://docs.asf.alaska.edu/api/
+- **ASF search interface**: https://search.asf.alaska.edu/
+- **Sentinel-1 information**: https://sentinel.esa.int/web/sentinel/missions/sentinel-1
 
 ---
 
-**Команда TengriSpacers** | **NASA Space Apps Challenge 2025**
+## ✅ Final recommendations
+
+1. **Use ASF API** for automation
+2. **Start with test download** of small area
+3. **Download VV+VH polarization** for better classification
+4. **Choose July** for melting peak analysis
+5. **Limit number** of files to reasonable limits
+
+**Result**: Fully automated 10-year data collection for Golubina Glacier melting analysis! 🚀
+
+---
+
+**Team TengriSpacers** | **NASA Space Apps Challenge 2025**
 

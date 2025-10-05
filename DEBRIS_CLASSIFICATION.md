@@ -1,113 +1,113 @@
-# Решение проблемы различения камней и льда в SAR данных
-## Методы классификации обломочного покрова на ледниках
+# Solving the Problem of Distinguishing Rocks and Ice in SAR Data
+## Debris Cover Classification Methods on Glaciers
 
 ---
 
-## 🎯 Проблема
+## 🎯 Problem
 
-В SAR данных уровни обратного рассеяния у камней (обломочного покрова) и льда часто бывают очень похожими, что затрудняет:
+In SAR data, backscatter levels from rocks (debris cover) and ice are often very similar, making it difficult to:
 
-- ✅ Различение ледниковой поверхности от окружающих скал
-- ✅ Определение границ ледников под обломочным покровом
-- ✅ Мониторинг динамики ледников с обломочным покровом
-- ✅ Оценку реальной площади ледников
-
----
-
-## 🔬 Физические основы различий
-
-### Характеристики обратного рассеяния:
-
-| Тип поверхности | VV поляризация (σ⁰, dB) | HV/VH поляризация (σ⁰, dB) | Различия |
-|----------------|-------------------------|---------------------------|----------|
-| **Чистый лёд** | -8 до -3 | -15 до -10 | Высокий VV, низкий кросс-пол |
-| **Влажный лёд** | -18 до -12 | -20 до -15 | Низкий VV, очень низкий кросс-пол |
-| **Сухие скалы** | -10 до -5 | -12 до -8 | Высокий VV, средний кросс-пол |
-| **Обломочный покров** | -12 до -6 | -14 до -9 | Переменный, зависит от влажности |
-| **Влажные камни** | -15 до -10 | -18 до -12 | Низкий VV, низкий кросс-пол |
+- ✅ Distinguish glacier surface from surrounding rocks
+- ✅ Determine glacier boundaries under debris cover
+- ✅ Monitor dynamics of debris-covered glaciers
+- ✅ Assess real glacier area
 
 ---
 
-## 🛠️ Методы решения
+## 🔬 Physical basis of differences
 
-### 1. Много-поляризационный подход
+### Backscatter characteristics:
 
-#### Использование кросс-поляризации (HV/VH):
-- **Преимущество**: HV/VH менее чувствительна к геометрии поверхности
-- **Метод**: Отношение VV/HV > 5-7 dB указывает на чистый лёд
-- **Реализация**: Используйте dual-pol (VV+VH) продукты Sentinel-1
+| Surface Type | VV Polarization (σ⁰, dB) | HV/VH Polarization (σ⁰, dB) | Differences |
+|--------------|---------------------------|-----------------------------|-------------|
+| **Clean ice** | -8 to -3 | -15 to -10 | High VV, low cross-pol |
+| **Wet ice** | -18 to -12 | -20 to -15 | Low VV, very low cross-pol |
+| **Dry rocks** | -10 to -5 | -12 to -8 | High VV, medium cross-pol |
+| **Debris cover** | -12 to -6 | -14 to -9 | Variable, depends on moisture |
+| **Wet rocks** | -15 to -10 | -18 to -12 | Low VV, low cross-pol |
 
-#### Код для классификации:
+---
+
+## 🛠️ Solution methods
+
+### 1. Multi-polarization approach
+
+#### Using cross-polarization (HV/VH):
+- **Advantage**: HV/VH is less sensitive to surface geometry
+- **Method**: VV/HV ratio > 5-7 dB indicates clean ice
+- **Implementation**: Use dual-pol (VV+VH) Sentinel-1 products
+
+#### Classification code:
 ```python
 def classify_ice_vs_debris(vv_image, vh_image):
     """
-    Классификация льда vs обломочного покрова
+    Ice vs debris cover classification
     """
-    # Отношение поляризаций
+    # Polarization ratio
     ratio = vv_image / (vh_image + 1e-10)
     ratio_db = 10 * np.log10(ratio + 1e-10)
 
-    # Порог для различения
-    ice_threshold = 7  # dB (настраиваемый)
+    # Threshold for discrimination
+    ice_threshold = 7  # dB (adjustable)
 
-    # Классификация
+    # Classification
     ice_mask = ratio_db > ice_threshold
     debris_mask = ratio_db <= ice_threshold
 
     return ice_mask, debris_mask, ratio_db
 ```
 
-### 2. Временной анализ
+### 2. Temporal analysis
 
-#### Много-временные изменения:
-- **Лёд**: Показывает сильные сезонные изменения (таяние летом)
-- **Камни**: Стабильное обратное рассеяние во времени
-- **Метод**: Анализ дисперсии временных рядов
+#### Multi-temporal changes:
+- **Ice**: Shows strong seasonal changes (melting in summer)
+- **Rocks**: Stable backscatter over time
+- **Method**: Analysis of time series variance
 
-#### Код для временного анализа:
+#### Temporal analysis code:
 ```python
 def temporal_classification(time_series):
     """
-    Классификация по временным изменениям
+    Classification by temporal changes
     """
-    # Стандартное отклонение временных рядов
+    # Standard deviation of time series
     std_dev = np.std(time_series, axis=0)
 
-    # Порог стабильности (камни имеют низкую дисперсию)
+    # Stability threshold (rocks have low variance)
     stability_threshold = 2  # dB
 
-    # Стабильные области = камни/обломки
+    # Stable areas = rocks/debris
     stable_mask = std_dev < stability_threshold
 
-    # Переменные области = лёд/снег
+    # Variable areas = ice/snow
     variable_mask = std_dev >= stability_threshold
 
     return stable_mask, variable_mask, std_dev
 ```
 
-### 3. Текстурный анализ
+### 3. Texture analysis
 
-#### Текстурные характеристики:
-- **Лёд**: Более гладкая поверхность, низкая текстурная изменчивость
-- **Обломки**: Шероховатая поверхность, высокая локальная изменчивость
+#### Texture characteristics:
+- **Ice**: Smoother surface, low texture variability
+- **Debris**: Rough surface, high local variability
 
-#### Методы текстурного анализа:
+#### Texture analysis methods:
 ```python
 def texture_analysis(sar_image, window_size=5):
     """
-    Анализ текстуры для классификации
+    Texture analysis for classification
     """
     from skimage.feature import graycomatrix, graycoprops
 
-    # Нормализация изображения
+    # Image normalization
     normalized = (sar_image - sar_image.min()) / (sar_image.max() - sar_image.min())
     normalized = (normalized * 255).astype(np.uint8)
 
-    # GLCM матрица
+    # GLCM matrix
     glcm = graycomatrix(normalized, distances=[1], angles=[0],
                        symmetric=True, normed=True)
 
-    # Текстурные метрики
+    # Texture metrics
     contrast = graycoprops(glcm, 'contrast')[0, 0]
     homogeneity = graycoprops(glcm, 'homogeneity')[0, 0]
     energy = graycoprops(glcm, 'energy')[0, 0]
@@ -115,29 +115,29 @@ def texture_analysis(sar_image, window_size=5):
     return contrast, homogeneity, energy
 ```
 
-### 4. Морфологический анализ
+### 4. Morphological analysis
 
-#### Форма и структура:
-- **Ледниковые зоны**: Обычно имеют более регулярную форму
-- **Обломочные зоны**: Более фрагментированные, хаотичные
+#### Shape and structure:
+- **Glacier zones**: Usually have more regular shape
+- **Debris zones**: More fragmented, chaotic
 
-#### Методы:
+#### Methods:
 ```python
 def morphological_analysis(binary_mask):
     """
-    Морфологический анализ для очистки масок
+    Morphological analysis for mask cleaning
     """
     from scipy.ndimage import binary_opening, binary_closing, label
 
-    # Удаление шумов
+    # Noise removal
     cleaned = binary_opening(binary_mask, structure=np.ones((3,3)))
     cleaned = binary_closing(cleaned, structure=np.ones((3,3)))
 
-    # Определение связанных компонент
+    # Connected component labeling
     labeled, num_features = label(cleaned)
 
-    # Фильтрация по размеру
-    min_area = 10  # минимальная площадь компоненты (пиксели)
+    # Size filtering
+    min_area = 10  # minimum component area (pixels)
     large_components = np.zeros_like(cleaned)
 
     for i in range(1, num_features + 1):
@@ -148,17 +148,17 @@ def morphological_analysis(binary_mask):
     return large_components
 ```
 
-### 5. Комбинированный подход
+### 5. Combined approach
 
-#### Интеграция нескольких методов:
+#### Integration of multiple methods:
 ```python
 def combined_classification(vv_images, vh_images=None, time_series=None):
     """
-    Комбинированная классификация ледниковой поверхности
+    Combined glacier surface classification
     """
     results = {}
 
-    # 1. Поляризационное отношение (если доступны VH данные)
+    # 1. Polarization ratio (if VH data available)
     if vh_images is not None:
         ice_mask_pol, debris_mask_pol, ratio = classify_ice_vs_debris(
             vv_images[-1], vh_images[-1]
@@ -169,7 +169,7 @@ def combined_classification(vv_images, vh_images=None, time_series=None):
             'ratio': ratio
         }
 
-    # 2. Временной анализ (если доступны временные ряды)
+    # 2. Temporal analysis (if time series available)
     if time_series is not None and len(time_series) > 1:
         stable_mask, variable_mask, std = temporal_classification(time_series)
         results['temporal'] = {
@@ -178,19 +178,19 @@ def combined_classification(vv_images, vh_images=None, time_series=None):
             'std_dev': std
         }
 
-    # 3. Текстурный анализ
+    # 3. Texture analysis
     contrast, homogeneity, energy = texture_analysis(vv_images[-1])
     results['texture'] = {
-        'smooth_ice': homogeneity > 0.7,  # Высокая однородность = лёд
-        'rough_debris': contrast > 0.5   # Высокий контраст = обломки
+        'smooth_ice': homogeneity > 0.7,  # High homogeneity = ice
+        'rough_debris': contrast > 0.5   # High contrast = debris
     }
 
-    # 4. Финальная комбинированная маска
+    # 4. Final combined mask
     final_ice_mask = np.zeros_like(vv_images[-1], dtype=bool)
 
-    # Комбинируем результаты
+    # Combine results
     if 'polarization' in results and 'temporal' in results:
-        # Логика комбинирования
+        # Combination logic
         pol_ice = results['polarization']['ice_mask']
         temp_var = results['temporal']['variable_mask']
         final_ice_mask = pol_ice & temp_var
@@ -200,56 +200,56 @@ def combined_classification(vv_images, vh_images=None, time_series=None):
 
 ---
 
-## 📊 Улучшения для пайплайна
+## 📊 Pipeline improvements
 
-### Обновленная конфигурация (`config.yaml`):
+### Updated configuration (`config.yaml`):
 
 ```yaml
-# Улучшенная классификация поверхности
+# Improved surface classification
 classification:
-  # Много-поляризационный подход
-  use_dual_pol: true  # Использовать VV+VH если доступно
-  polarization_ratio_threshold: 7  # dB порог для VV/VH отношения
+  # Multi-polarization approach
+  use_dual_pol: true  # Use VV+VH if available
+  polarization_ratio_threshold: 7  # dB threshold for VV/VH ratio
 
-  # Временной анализ
-  temporal_stability_threshold: 2  # dB порог стабильности
-  min_time_series_length: 3  # минимум изображений для анализа
+  # Temporal analysis
+  temporal_stability_threshold: 2  # dB stability threshold
+  min_time_series_length: 3  # minimum images for analysis
 
-  # Текстурный анализ
-  texture_window_size: 5  # размер окна для GLCM
-  texture_contrast_threshold: 0.5  # порог контраста
+  # Texture analysis
+  texture_window_size: 5  # window size for GLCM
+  texture_contrast_threshold: 0.5  # contrast threshold
 
-  # Морфологическая обработка
-  min_component_area: 10  # пикселей
+  # Morphological processing
+  min_component_area: 10  # pixels
   morphological_opening: true
   morphological_closing: true
 
-  # Классы поверхности
+  # Surface classes
   surface_classes:
-    - "clean_ice"           # Чистый лёд
-    - "debris_covered_ice"  # Лёд под обломками
-    - "rock_debris"         # Камни и обломки
-    - "wet_snow"           # Мокрый снег
-    - "dry_snow"           # Сухой снег
-    - "water"              # Вода
+    - "clean_ice"           # Clean ice
+    - "debris_covered_ice"  # Ice under debris
+    - "rock_debris"         # Rocks and debris
+    - "wet_snow"           # Wet snow
+    - "dry_snow"           # Dry snow
+    - "water"              # Water
 ```
 
-### Обновленный пайплайн (`sar_pipeline.py`):
+### Updated pipeline (`sar_pipeline.py`):
 
 ```python
 class ImprovedSARGlacierPipeline(SARGlacierPipeline):
     """
-    Улучшенный пайплайн с классификацией обломочного покрова
+    Improved pipeline with debris cover classification
     """
 
     def classify_glacier_surfaces(self, sar_images, dates,
                                   use_dual_pol=False, vh_images=None):
         """
-        Классификация типов поверхности ледника
+        Glacier surface type classification
 
         Args:
-            sar_images: Список VV изображений
-            dates: Соответствующие даты
+            sar_images: List of VV images
+            dates: Corresponding dates
             use_dual_pol: Использовать ли кросс-поляризацию
             vh_images: VH изображения (если доступны)
         """

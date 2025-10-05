@@ -1,122 +1,122 @@
-# 🚀 Быстрый старт: Чек-лист (10 минут)
+# 🚀 Quick Start: Checklist (10 minutes)
 
-## ✅ ШАГ 1: Установка (2 минуты)
+## ✅ STEP 1: Installation (2 minutes)
 ```bash
-# Проверка Python версии
-python3 --version  # Должно быть 3.8+
+# Check Python version
+python3 --version  # Should be 3.8+
 
-# Установка основных библиотек
+# Install main libraries
 pip3 install numpy matplotlib scipy rasterio geopandas pyyaml
 
-# Проверка работоспособности
-python3 sar_pipeline.py  # Должно вывести приветствие
+# Check functionality
+python3 sar_pipeline.py  # Should output welcome message
 ```
 
-## ✅ ШАГ 2: Данные (3 минуты)
+## ✅ STEP 2: Data (3 minutes)
 ```bash
-# 1. Перейдите на https://search.asf.alaska.edu/
-# 2. Введите координаты: 42.565, 74.5 (Ala-Archa)
-# 3. Фильтры:
+# 1. Go to https://search.asf.alaska.edu/
+# 2. Enter coordinates: 42.565, 74.5 (Ala-Archa)
+# 3. Filters:
 #    - Dataset: Sentinel-1
-#    - Polarization: VV+VH (или VV)
+#    - Polarization: VV+VH (or VV)
 #    - Product: GRD_HD
-#    - Даты: июнь 2023 + июнь 2024
-# 4. Скачайте 2 файла
-# 5. Поместите в output/raw_data/
+#    - Dates: June 2023 + June 2024
+# 4. Download 2 files
+# 5. Place in output/raw_data/
 ```
 
-## ✅ ШАГ 3: Тестовый запуск (2 минуты)
+## ✅ STEP 3: Test run (2 minutes)
 ```bash
-# Запуск примеров с синтетическими данными
+# Run examples with synthetic data
 python3 example_workflow.py
 
-# Результаты появятся в output/visualizations/
+# Results will appear in output/visualizations/
 ```
 
-## ✅ ШАГ 3.1: Автоматизированное скачивание (5 минут)
+## ✅ STEP 3.1: Automated download (5 minutes)
 ```bash
-# Скачайте данные за 10 лет для ледника Голубина
+# Download 10 years of data for Golubina Glacier
 python3 asf_api_downloader.py --years 2015 2025 --month 7
 
-# Или запустите полный пайплайн автоматически
+# Or run the full pipeline automatically
 python3 run_full_pipeline.py
 ```
 
-## ✅ ШАГ 5: Реальный анализ (3 минуты)
+## ✅ STEP 5: Real analysis (3 minutes)
 ```python
 from sar_pipeline import SARGlacierPipeline
 
-# Инициализация
+# Initialize
 pipeline = SARGlacierPipeline('config.yaml')
 
-# Загрузка ваших данных
-img1 = pipeline.preprocess_sar_image('output/raw_data/ваш_файл_2023.tif')
-img2 = pipeline.preprocess_sar_image('output/raw_data/ваш_файл_2024.tif')
+# Load your data
+img1 = pipeline.preprocess_sar_image('output/raw_data/your_file_2023.tif')
+img2 = pipeline.preprocess_sar_image('output/raw_data/your_file_2024.tif')
 
-# Анализ изменений
+# Analyze changes
 results = pipeline.compare_images(img1, img2, '2023-06-01', '2024-06-01')
 
-# Визуализация
+# Visualize
 pipeline.visualize_comparison(img1, img2, results, 'output/comparison.png')
 
-print("Готово! Проверьте output/visualizations/")
+print("Done! Check output/visualizations/")
 ```
 
 ---
 
-## 🎯 ГЛАВНОЕ: VV ПОЛЯРИЗАЦИЯ
-**Используйте VV (Vertical-Vertical)** поляризацию Sentinel-1 для оптимального обнаружения таяния ледников!
+## 🎯 MAIN: VV POLARIZATION
+**Use VV (Vertical-Vertical)** Sentinel-1 polarization for optimal glacier melting detection!
 
-**Почему VV?**
-- ✅ Максимальная чувствительность к талой воде
-- ✅ Высокий контраст между сухим и влажным льдом
-- ✅ Доступна в 100% снимков Sentinel-1
+**Why VV?**
+- ✅ Maximum sensitivity to melt water
+- ✅ High contrast between dry and wet ice
+- ✅ Available in 100% of Sentinel-1 images
 
 ---
 
-## 📁 Структура проекта
+## 📁 Project structure
 ```
 GlacierSAR-Kyrgyzstan/
-├── sar_pipeline.py          # Основной код
-├── config.yaml             # Конфигурация
-├── example_workflow.py     # Примеры
-├── requirements.txt        # Зависимости
-├── QUICK_START.md          # Подробный гид
-└── output/                 # Результаты
+├── sar_pipeline.py          # Main code
+├── config.yaml             # Configuration
+├── example_workflow.py     # Examples
+├── requirements.txt        # Dependencies
+├── QUICK_START.md          # Detailed guide
+└── output/                 # Results
 ```
 
 ---
 
-## 🔧 Если проблемы
+## 🔧 If problems
 
-### Ошибка импорта:
+### Import error:
 ```bash
 pip3 install rasterio geopandas scikit-image
 ```
 
-### Нет данных:
+### No data:
 ```bash
-# Автоматически скачайте данные за 10 лет:
+# Automatically download 10 years of data:
 python3 asf_api_downloader.py --years 2015 2025 --month 7
 
-# Или скачайте вручную с ASF (см. QUICK_START.md)
-# Или используйте синтетические данные из example_workflow.py
+# Or download manually from ASF (see QUICK_START.md)
+# Or use synthetic data from example_workflow.py
 ```
 
-### Вопросы:
-- См. `QUICK_START.md` для подробностей
-- См. `DEBRIS_CLASSIFICATION.md` для улучшенной классификации
+### Questions:
+- See `QUICK_START.md` for details
+- See `DEBRIS_CLASSIFICATION.md` for improved classification
 
 ---
 
-## 🎉 ГОТОВО!
-Теперь у вас есть рабочий пайплайн для мониторинга ледников Ala-Archa с использованием SAR данных!
+## 🎉 DONE!
+Now you have a working pipeline for monitoring Ala-Archa glaciers using SAR data!
 
-**Следующие шаги:**
-1. Автоматически скачайте данные за 10 лет: `python3 asf_api_downloader.py --years 2015 2025 --month 7`
-2. Обработайте временные ряды: `python3 time_series_processor.py`
-3. Или запустите полный пайплайн: `python3 run_full_pipeline.py`
-4. Создайте презентацию с результатами
+**Next steps:**
+1. Automatically download 10 years of data: `python3 asf_api_downloader.py --years 2015 2025 --month 7`
+2. Process time series: `python3 time_series_processor.py`
+3. Or run the full pipeline: `python3 run_full_pipeline.py`
+4. Create presentation with results
 5. Profit! 🚀
 
 ---

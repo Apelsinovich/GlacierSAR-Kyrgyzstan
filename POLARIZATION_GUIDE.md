@@ -5,184 +5,184 @@
 
 ## Executive Summary
 
-**РЕКОМЕНДАЦИЯ: Используйте VV поляризацию для мониторинга ледников**
+**RECOMMENDATION: Use VV polarization for glacier monitoring**
 
-VV (вертикальная передача, вертикальный приём) является оптимальным выбором для анализа таяния ледников в проекте Ala-Archa.
-
----
-
-## 1. Понимание SAR Поляризации
-
-### Что такое поляризация?
-
-Поляризация определяет ориентацию электромагнитной волны:
-- **H (Horizontal)** - Горизонтальная
-- **V (Vertical)** - Вертикальная
-
-### Четыре основных комбинации:
-
-1. **HH** - Горизонтальная передача, Горизонтальный приём
-2. **HV** - Горизонтальная передача, Вертикальный приём (кросс-поляризация)
-3. **VH** - Вертикальная передача, Горизонтальный приём (кросс-поляризация)
-4. **VV** - Вертикальная передача, Вертикальный приём
+VV (vertical transmission, vertical reception) is the optimal choice for glacier melting analysis in the Ala-Archa project.
 
 ---
 
-## 2. Сравнение поляризаций для ледников
+## 1. Understanding SAR Polarization
 
-| Поляризация | Преимущества | Недостатки | Использование |
-|-------------|--------------|------------|---------------|
-| **VV** ⭐ | • Высокая чувствительность к поверхности льда<br>• Отлично для обнаружения талой воды<br>• Хорошее проникновение в снег<br>• Чувствительна к шероховатости поверхности | • Может быть чувствительна к шуму<br>• Требует хорошей калибровки | **ОСНОВНАЯ РЕКОМЕНДАЦИЯ**<br>Оптимально для:<br>- Обнаружения таяния<br>- Картирования зон абляции<br>- Определения границ ледников |
-| **HH** | • Хорошее проникновение<br>• Чувствительна к структуре льда<br>• Полезна для сухого снега | • Менее чувствительна к талой воде<br>• Меньше данных доступно | **АЛЬТЕРНАТИВА**<br>Полезна для:<br>- Сухого снега/фирна<br>- Структурного анализа |
-| **HV/VH** | • Чувствительны к объёмному рассеянию<br>• Полезны для классификации типов поверхности | • Слабый сигнал от гладких поверхностей<br>• Низкое отношение сигнал/шум для льда | **ДОПОЛНИТЕЛЬНО**<br>Используйте для:<br>- Обломочного покрова<br>- Классификации поверхности |
+### What is polarization?
 
----
+Polarization defines the orientation of electromagnetic waves:
+- **H (Horizontal)** - Horizontal
+- **V (Vertical)** - Vertical
 
-## 3. Почему VV оптимальна для нашего проекта?
+### Four main combinations:
 
-### 3.1 Обнаружение талой воды
-- VV поляризация **наиболее чувствительна** к присутствию жидкой воды на поверхности ледника
-- Талая вода резко снижает обратное рассеяние в VV
-- Это позволяет чётко картировать зоны таяния
-
-### 3.2 Чувствительность к шероховатости поверхности
-- VV отлично различает:
-  - Гладкий лёд (низкое обратное рассеяние)
-  - Шероховатый лёд (высокое обратное рассеяние)
-  - Влажный снег (среднее обратное рассеяние)
-
-### 3.3 Определение границ ледников
-- VV обеспечивает **высокий контраст** между:
-  - Ледниковыми поверхностями
-  - Окружающими скалами
-  - Зонами морены
-
-### 3.4 Временные ряды
-- VV имеет **максимальную доступность** данных Sentinel-1
-- Позволяет создавать плотные временные ряды
-- Лучшая согласованность данных во времени
+1. **HH** - Horizontal transmission, Horizontal reception
+2. **HV** - Horizontal transmission, Vertical reception (cross-polarization)
+3. **VH** - Vertical transmission, Horizontal reception (cross-polarization)
+4. **VV** - Vertical transmission, Vertical reception
 
 ---
 
-## 4. Характеристики обратного рассеяния
+## 2. Polarization comparison for glaciers
 
-### Типичные значения σ⁰ (Sigma0) в dB для VV:
-
-| Тип поверхности | Обратное рассеяние (dB) | Интерпретация |
-|-----------------|-------------------------|---------------|
-| **Сухой снег** | -10 до -5 | Высокое рассеяние (яркое) |
-| **Фирн** | -12 до -8 | Среднее-высокое |
-| **Ледниковый лёд (сухой)** | -8 до -3 | Высокое (очень яркое) |
-| **Влажный снег/лёд** | -18 до -12 | Низкое (тёмное) |
-| **Талая вода на поверхности** | < -20 | Очень низкое (очень тёмное) |
-| **Скалы/морена** | -5 до 0 | Очень высокое |
-
-### Ключевые индикаторы таяния в VV:
-1. **Снижение обратного рассеяния** > 3 dB → Вероятно таяние
-2. **Временное снижение** в летние месяцы → Сезонное таяние
-3. **Постоянное снижение** во времени → Изменение поверхности ледника
+| Polarization | Advantages | Disadvantages | Usage |
+|-------------|------------|---------------|-------|
+| **VV** ⭐ | • High sensitivity to ice surface<br>• Excellent for melt water detection<br>• Good snow penetration<br>• Sensitive to surface roughness | • May be sensitive to noise<br>• Requires good calibration | **MAIN RECOMMENDATION**<br>Optimal for:<br>- Melting detection<br>- Ablation zone mapping<br>- Glacier boundary definition |
+| **HH** | • Good penetration<br>• Sensitive to ice structure<br>• Useful for dry snow | • Less sensitive to melt water<br>• Less data available | **ALTERNATIVE**<br>Useful for:<br>- Dry snow/firn<br>- Structural analysis |
+| **HV/VH** | • Sensitive to volume scattering<br>• Useful for surface type classification | • Weak signal from smooth surfaces<br>• Low signal-to-noise ratio for ice | **ADDITIONAL**<br>Use for:<br>- Debris cover<br>- Surface classification |
 
 ---
 
-## 5. Когда использовать другие поляризации
+## 3. Why is VV optimal for our project?
 
-### Используйте HH когда:
-- Анализируете преимущественно сухой снег
-- Нужна информация о глубинной структуре
-- VV данные недоступны
+### 3.1 Melt water detection
+- VV polarization is **most sensitive** to presence of liquid water on glacier surface
+- Melt water sharply reduces backscatter in VV
+- This allows clear mapping of melting zones
 
-### Используйте HV/VH когда:
-- Картируете обломочный покров на леднике
-- Проводите детальную классификацию поверхности
-- Нужна информация об объёмном рассеянии
+### 3.2 Surface roughness sensitivity
+- VV excellently distinguishes:
+  - Smooth ice (low backscatter)
+  - Rough ice (high backscatter)
+  - Wet snow (medium backscatter)
 
-### Используйте полную поляриметрию (Quad-pol) когда:
-- Нужна максимально детальная информация
-- Проводите научное исследование с высокими требованиями
-- Доступны ресурсы для сложной обработки
-- **НО**: данные менее доступны и требуют больше обработки
+### 3.3 Glacier boundary definition
+- VV provides **high contrast** between:
+  - Glacier surfaces
+  - Surrounding rocks
+  - Moraine zones
+
+### 3.4 Time series
+- VV has **maximum availability** of Sentinel-1 data
+- Allows creating dense time series
+- Best data consistency over time
 
 ---
 
-## 6. Практические рекомендации для Ala-Archa
+## 4. Backscatter characteristics
 
-### Стратегия данных:
+### Typical σ⁰ (Sigma0) values in dB for VV:
 
-#### Минимальная конфигурация (рекомендуется для конкурса):
+| Surface Type | Backscatter (dB) | Interpretation |
+|--------------|------------------|----------------|
+| **Dry snow** | -10 to -5 | High backscatter (bright) |
+| **Firn** | -12 to -8 | Medium-high |
+| **Glacier ice (dry)** | -8 to -3 | High (very bright) |
+| **Wet snow/ice** | -18 to -12 | Low (dark) |
+| **Melt water on surface** | < -20 | Very low (very dark) |
+| **Rocks/moraine** | -5 to 0 | Very high |
+
+### Key melting indicators in VV:
+1. **Backscatter decrease** > 3 dB → Likely melting
+2. **Temporary decrease** in summer months → Seasonal melting
+3. **Persistent decrease** over time → Glacier surface change
+
+---
+
+## 5. When to use other polarizations
+
+### Use HH when:
+- Analyzing predominantly dry snow
+- Need information about deep structure
+- VV data unavailable
+
+### Use HV/VH when:
+- Mapping debris cover on glacier
+- Conducting detailed surface classification
+- Need information about volume scattering
+
+### Use full polarimetry (Quad-pol) when:
+- Need maximum detailed information
+- Conducting scientific research with high requirements
+- Resources available for complex processing
+- **BUT**: data less available and requires more processing
+
+---
+
+## 6. Practical recommendations for Ala-Archa
+
+### Data strategy:
+
+#### Minimal configuration (recommended for competition):
 ```yaml
-Поляризация: VV
-Спутник: Sentinel-1
-Тип продукта: GRD (Ground Range Detected)
-Режим: IW (Interferometric Wide)
-Орбита: ASCENDING или DESCENDING (одна для всех)
-Временной интервал: 12 дней (цикл повторения Sentinel-1)
+Polarization: VV
+Satellite: Sentinel-1
+Product type: GRD (Ground Range Detected)
+Mode: IW (Interferometric Wide)
+Orbit: ASCENDING or DESCENDING (one for all)
+Temporal interval: 12 days (Sentinel-1 repeat cycle)
 ```
 
-#### Расширенная конфигурация (если время позволяет):
+#### Extended configuration (if time allows):
 ```yaml
-Основная поляризация: VV
-Дополнительная: VH (если доступна в dual-pol продуктах)
-Можно использовать: VV/VH соотношение для лучшей классификации
+Main polarization: VV
+Additional: VH (if available in dual-pol products)
+Can use: VV/VH ratio for better classification
 ```
 
-### Временные периоды для анализа:
+### Temporal periods for analysis:
 
-1. **Зимний базовый период** (январь-март):
-   - Минимальное таяние
-   - Установите базовую линию для сравнения
+1. **Winter baseline period** (January-March):
+   - Minimal melting
+   - Establish baseline for comparison
 
-2. **Период активного таяния** (июнь-август):
-   - Максимальные изменения
-   - Ключевой период для обнаружения таяния
+2. **Active melting period** (June-August):
+   - Maximum changes
+   - Key period for melting detection
 
-3. **Межгодовое сравнение**:
-   - Сравнивайте одинаковые месяцы разных лет
-   - Например: июль 2020 vs июль 2024
+3. **Inter-annual comparison**:
+   - Compare same months of different years
+   - For example: July 2020 vs July 2024
 
 ---
 
-## 7. Загрузка данных
+## 7. Data download
 
-### Alaska Satellite Facility (ASF) - Рекомендуется
+### Alaska Satellite Facility (ASF) - Recommended
 
-**Шаги:**
-1. Перейдите на https://search.asf.alaska.edu/
-2. Выберите область интереса (Ala-Archa: 42.5°N, 74.5°E)
-3. Фильтры:
+**Steps:**
+1. Go to https://search.asf.alaska.edu/
+2. Select area of interest (Ala-Archa: 42.5°N, 74.5°E)
+3. Filters:
    - Dataset: Sentinel-1
    - Beam Mode: IW
-   - Polarization: **VV** или **VV+VH** (dual-pol)
-   - Product Type: GRD_HD или GRD_MD
-4. Выберите даты
-5. Скачайте
+   - Polarization: **VV** or **VV+VH** (dual-pol)
+   - Product Type: GRD_HD or GRD_MD
+4. Select dates
+5. Download
 
-### Альтернативные источники:
+### Alternative sources:
 - **Copernicus Open Access Hub**: https://scihub.copernicus.eu/
-- **Google Earth Engine**: Для автоматизированной обработки
-- **ESA SNAP Toolbox**: Для локальной обработки
+- **Google Earth Engine**: For automated processing
+- **ESA SNAP Toolbox**: For local processing
 
 ---
 
-## 8. Обработка в пайплайне
+## 8. Processing in pipeline
 
-### Использование нашего пайплайна:
+### Using our pipeline:
 
 ```python
 from sar_pipeline import SARGlacierPipeline
 
-# Инициализация
+# Initialize
 pipeline = SARGlacierPipeline('config.yaml')
 
-# Обработка VV поляризации
+# Process VV polarization
 vv_image = pipeline.preprocess_sar_image(
     'raw_data/S1A_IW_GRDH_VV_20240601.tif',
     'preprocessed/image_20240601_VV.tif'
 )
 
-# Детекция ледников
+# Glacier detection
 glacier_mask = pipeline.detect_glacier_boundaries(vv_image)
 
-# Сравнение временных точек
+# Compare temporal points
 results = pipeline.compare_images(
     vv_image_2023, vv_image_2024,
     '2023-06-01', '2024-06-01'
@@ -191,102 +191,102 @@ results = pipeline.compare_images(
 
 ---
 
-## 9. Интерпретация результатов
+## 9. Results interpretation
 
-### Что показывают изменения в VV:
+### What changes in VV show:
 
-#### Снижение обратного рассеяния (синие области на карте изменений):
-✓ **Вероятно**: Таяние снега/льда  
-✓ **Вероятно**: Увеличение влажности  
-✓ **Вероятно**: Переход сухой→влажный снег  
-✗ **Маловероятно**: Аккумуляция нового снега
+#### Backscatter decrease (blue areas on change map):
+✓ **Likely**: Snow/ice melting  
+✓ **Likely**: Increased moisture  
+✓ **Likely**: Dry→wet snow transition  
+✗ **Unlikely**: New snow accumulation
 
-#### Увеличение обратного рассеяния (красные области):
-✓ **Вероятно**: Замерзание талой воды  
-✓ **Вероятно**: Увеличение шероховатости  
-✓ **Вероятно**: Сухой снегопад  
-✗ **Маловероятно**: Таяние
-
----
-
-## 10. Валидация и проверка качества
-
-### Проверьте ваши результаты:
-
-1. **Сезонная согласованность**:
-   - Летом должно быть больше снижения обратного рассеяния
-   - Зимой - увеличение или стабильность
-
-2. **Географическая согласованность**:
-   - Изменения должны соответствовать известным ледникам
-   - Не должно быть изменений на скалах
-
-3. **Сравнение с оптическими данными**:
-   - Используйте Landsat/Sentinel-2 для валидации
-   - Облачность может быть проблемой
-
-4. **Климатические данные**:
-   - Сверьте с температурными трендами
-   - Сопоставьте с осадками
+#### Backscatter increase (red areas):
+✓ **Likely**: Melt water freezing  
+✓ **Likely**: Increased roughness  
+✓ **Likely**: Dry snowfall  
+✗ **Unlikely**: Melting
 
 ---
 
-## 11. Часто задаваемые вопросы
+## 10. Validation and quality control
 
-**Q: Можно ли комбинировать VV и HH?**  
-A: Да, если доступны оба. Но обычно для Sentinel-1 доступны VV+VH (dual-pol).
+### Check your results:
 
-**Q: Что лучше: GRD или SLC?**  
-A: Для начального анализа используйте **GRD** (проще). SLC нужен для интерферометрии.
+1. **Seasonal consistency**:
+   - Summer should show more backscatter decrease
+   - Winter - increase or stability
 
-**Q: Какое пространственное разрешение у VV Sentinel-1?**  
-A: GRD продукты: 10м x 10м (после обработки)
+2. **Geographic consistency**:
+   - Changes should correspond to known glaciers
+   - No changes should occur on rocks
 
-**Q: Сколько данных нужно скачать?**  
-A: Для презентации достаточно 4-6 сцен (2-3 даты, возможно разные годы)
+3. **Comparison with optical data**:
+   - Use Landsat/Sentinel-2 for validation
+   - Cloudiness can be a problem
 
-**Q: Можно ли использовать другие SAR спутники?**  
-A: Да (ALOS-2, RADARSAT-2, TerraSAR-X), но Sentinel-1 бесплатен и доступен.
+4. **Climate data**:
+   - Check against temperature trends
+   - Correlate with precipitation
 
 ---
 
-## 12. Резюме для конкурса
+## 11. Frequently asked questions
 
-### Ваш выбор поляризации: **VV** ✅
+**Q: Can VV and HH be combined?**  
+A: Yes, if both are available. But usually for Sentinel-1, VV+VH (dual-pol) is available.
 
-### Обоснование для презентации:
+**Q: What is better: GRD or SLC?**  
+A: For initial analysis use **GRD** (simpler). SLC is needed for interferometry.
 
-> "Мы выбрали VV поляризацию Sentinel-1 SAR для мониторинга ледников Ала-Арча, потому что:
+**Q: What is the spatial resolution of VV Sentinel-1?**  
+A: GRD products: 10m x 10m (after processing)
+
+**Q: How much data should be downloaded?**  
+A: For presentation, 4-6 scenes are sufficient (2-3 dates, possibly different years)
+
+**Q: Can other SAR satellites be used?**  
+A: Yes (ALOS-2, RADARSAT-2, TerraSAR-X), but Sentinel-1 is free and available.
+
+---
+
+## 12. Competition summary
+
+### Your polarization choice: **VV** ✅
+
+### Justification for presentation:
+
+> "We chose VV polarization Sentinel-1 SAR for monitoring Ala-Archa glaciers because:
 > 
-> 1. **Оптимальная чувствительность** к талой воде и изменениям поверхности льда
-> 2. **Высокий контраст** между ледниковыми и не-ледниковыми поверхностями
-> 3. **Максимальная доступность** данных для создания плотных временных рядов
-> 4. **Проверенная эффективность** в научной литературе для криосферных приложений
+> 1. **Optimal sensitivity** to melt water and ice surface changes
+> 2. **High contrast** between glacier and non-glacier surfaces
+> 3. **Maximum data availability** for creating dense time series
+> 4. **Proven effectiveness** in scientific literature for cryospheric applications
 > 
-> VV поляризация позволяет нам надёжно обнаруживать зоны активного таяния и количественно оценивать изменения площади ледников во времени."
+> VV polarization allows us to reliably detect active melting zones and quantitatively assess glacier area changes over time."
 
 ---
 
-## 13. Дополнительные ресурсы
+## 13. Additional resources
 
-### Научная литература:
+### Scientific literature:
 - Nagler et al. (2015) - "Retrieval of wet snow by means of multitemporal SAR data"
 - Winsvold et al. (2018) - "Using SAR for glacier mapping in Norway"
 - Paul et al. (2016) - "The glaciers climate change initiative: Methods for glacier monitoring"
 
-### Онлайн курсы:
+### Online courses:
 - NASA ARSET - SAR for Land Applications
 - ESA RUS Training - SAR Basics
 
-### Инструменты:
-- ESA SNAP - Бесплатный SAR процессор
-- QGIS - Визуализация
-- Python + GDAL - Автоматизация
+### Tools:
+- ESA SNAP - Free SAR processor
+- QGIS - Visualization
+- Python + GDAL - Automation
 
 ---
 
-**Документ подготовлен для команды TengriSpacers**  
+**Document prepared for Team TengriSpacers**  
 **NASA Space Apps Challenge 2025**  
-**Проект: Through the Radar Looking Glass - Ala-Archa Glaciers**
+**Project: Through the Radar Looking Glass - Ala-Archa Glaciers**
 
 
